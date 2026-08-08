@@ -19,15 +19,23 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
+  const req = event.request;
+  // Only handle GET requests on http(s) — chrome-extension://, data:, blob:, etc.
+  // are not cacheable and must be left to the browser's default handling,
+  // otherwise cache.put() throws "unsupported scheme".
+  if (req.method !== 'GET' || !req.url.startsWith('http')) return;
+
   event.respondWith(
-    caches.match(event.request).then((cached) => {
+    caches.match(req).then((cached) => {
       return (
         cached ||
-        fetch(event.request)
+        fetch(req)
           .then((response) => {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+            // Only cache successful, basic (same-origin) responses.
+            if (response && response.ok && response.type === 'basic') {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then((cache) => cache.put(req, clone)).catch(() => {});
+            }
             return response;
           })
           .catch(() => cached)

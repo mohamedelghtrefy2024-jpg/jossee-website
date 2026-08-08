@@ -1103,9 +1103,67 @@
         .lazy-image { opacity: 0; transition: opacity var(--transition-medium); }
         .lazy-image.loaded { opacity: 1; }
         .reduced-motion * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+
+        /* ============================================================
+           FLOATING SOCIAL BAR
+           ============================================================ */
+        .social-float {
+            position: fixed;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .social-float-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .social-float-btn:hover,
+        .social-float-btn:focus-visible {
+            transform: scale(1.12);
+            box-shadow: var(--shadow-lg);
+        }
+        .social-fb { background: #1877F2; }
+        .social-ig { background: radial-gradient(circle at 30% 110%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+        .social-wa { background: #25D366; }
+        @media (max-width: 768px) {
+            .social-float {
+                left: auto;
+                right: 12px;
+                top: auto;
+                bottom: 90px;
+                transform: none;
+            }
+            .social-float-btn { width: 38px; height: 38px; }
+        }
     </style>
 </head>
 <body>
+    <!-- ============================================================
+       FLOATING SOCIAL BAR — fixed to page edge, follows scroll
+       ============================================================ -->
+    <div class="social-float" role="complementary" aria-label="تابعنا على السوشيال ميديا">
+        <a href="https://www.facebook.com/JosseeCoffee" target="_blank" rel="noopener" class="social-float-btn social-fb" aria-label="صفحتنا على فيسبوك">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56v1.89h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/josseecoffee/" target="_blank" rel="noopener" class="social-float-btn social-ig" aria-label="صفحتنا على انستجرام">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12 2c-2.72 0-3.06.01-4.12.06-1.06.05-1.79.22-2.43.47-.66.26-1.22.6-1.77 1.16-.56.55-.9 1.11-1.16 1.77-.25.64-.42 1.37-.47 2.43C2 8.94 2 9.28 2 12s.01 3.06.06 4.12c.05 1.06.22 1.79.47 2.43.26.66.6 1.22 1.16 1.77.55.56 1.11.9 1.77 1.16.64.25 1.37.42 2.43.47C8.94 22 9.28 22 12 22s3.06-.01 4.12-.06c1.06-.05 1.79-.22 2.43-.47.66-.26 1.22-.6 1.77-1.16.56-.55.9-1.11 1.16-1.77.25-.64.42-1.37.47-2.43.05-1.06.06-1.4.06-4.12s-.01-3.06-.06-4.12c-.05-1.06-.22-1.79-.47-2.43-.26-.66-.6-1.22-1.16-1.77-.55-.56-1.11-.9-1.77-1.16-.64-.25-1.37-.42-2.43-.47C15.06 2.01 14.72 2 12 2zm0 1.8c2.67 0 2.99.01 4.04.06.98.04 1.5.21 1.86.35.47.18.8.4 1.15.75.35.35.57.68.75 1.15.14.36.31.88.35 1.86.05 1.05.06 1.37.06 4.04s-.01 2.99-.06 4.04c-.04.98-.21 1.5-.35 1.86-.18.47-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.14-.88.31-1.86.35-1.05.05-1.37.06-4.04.06s-2.99-.01-4.04-.06c-.98-.04-1.5-.21-1.86-.35-.47-.18-.8-.4-1.15-.75-.35-.35-.57-.68-.75-1.15-.14-.36-.31-.88-.35-1.86C3.81 14.99 3.8 14.67 3.8 12s.01-2.99.06-4.04c.04-.98.21-1.5.35-1.86.18-.47.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.14.88-.31 1.86-.35C9.01 3.81 9.33 3.8 12 3.8zm0 3.05a5.15 5.15 0 100 10.3 5.15 5.15 0 000-10.3zm0 8.5a3.35 3.35 0 110-6.7 3.35 3.35 0 010 6.7zm5.35-8.7a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"/></svg>
+        </a>
+        <a href="https://wa.me/201281300002" target="_blank" rel="noopener" class="social-float-btn social-wa" aria-label="تواصل معنا على واتساب">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 004.74 1.2h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14a1.6 1.6 0 01-1.1.8c-.29.06-.66.1-1.94-.42-1.63-.65-2.68-2.3-2.76-2.4-.08-.11-.66-.87-.66-1.66 0-.79.42-1.18.57-1.34.15-.16.32-.2.43-.2.11 0 .21 0 .3.01.1 0 .23-.04.36.27.13.32.44 1.1.48 1.18.04.08.06.18.01.29-.05.11-.08.18-.16.28-.08.1-.17.22-.24.29-.08.08-.17.17-.07.33.1.16.44.72.94 1.17.65.58 1.19.76 1.35.85.16.08.26.07.35-.04.1-.11.42-.49.53-.66.11-.16.22-.14.37-.08.15.05.96.45 1.12.53.16.08.27.12.31.19.04.07.04.4-.09.79z"/></svg>
+        </a>
+    </div>
+
     <!-- ============================================================
        NAVIGATION
        ============================================================ -->
@@ -1812,68 +1870,40 @@
             </div>
 
             <div id="grindList" style="background: var(--cream); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/extra_fine.jpg" alt="طحن ناعم جداً" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
                     <div style="font-weight: 700;">تركية</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 10%; background: var(--espresso-black); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">ناعم جداً</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">ناعم جداً</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/fine.jpg" alt="طحن ناعم" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
                     <div style="font-weight: 700;">إسبريسو</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 25%; background: var(--coffee-brown); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">ناعم</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">ناعم</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
-                    <div style="font-weight: 700;">موكا</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 40%; background: var(--medium-roast); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">متوسط ناعم</span>
-                    </div>
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/medium_fine.jpg" alt="طحن متوسط ناعم" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
+                    <div style="font-weight: 700;">موكا بوت</div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">متوسط ناعم</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
-                    <div style="font-weight: 700;">V60 / بور أوفر</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 50%; background: var(--warm-cream); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">متوسط</span>
-                    </div>
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/medium_fine.jpg" alt="طحن متوسط ناعم" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
+                    <div style="font-weight: 700;">V60 / بور أوفر / سايفون</div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">متوسط ناعم</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/medium_coarse.jpg" alt="طحن متوسط خشن" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
                     <div style="font-weight: 700;">تشيمكس</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 65%; background: var(--sand); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">متوسط خشن</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">متوسط خشن</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md); border-bottom: 1px solid rgba(23,18,15,0.06);">
+                    <img src="assets/grind/coarse.jpg" alt="طحن خشن" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
                     <div style="font-weight: 700;">فرينش بريس</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 80%; background: var(--beige); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">خشن</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">خشن</span>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-md); align-items: center; padding: var(--space-md);">
+                <div style="display: grid; grid-template-columns: 56px 1fr auto; gap: var(--space-md); align-items: center; padding: var(--space-md);">
+                    <img src="assets/grind/coarse.jpg" alt="طحن خشن جداً" loading="lazy" style="width: 56px; height: 56px; border-radius: var(--radius-sm); object-fit: cover;">
                     <div style="font-weight: 700;">كولد برو</div>
-                    <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                        <div style="flex: 1; height: 8px; background: rgba(23,18,15,0.06); border-radius: 4px; overflow: hidden;">
-                            <div style="height: 100%; width: 95%; background: var(--beige); border-radius: 4px;"></div>
-                        </div>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">خشن جداً</span>
-                    </div>
+                    <span style="font-size: 14px; color: var(--coffee-brown);">خشن جداً</span>
                 </div>
             </div>
         </div>
@@ -4188,24 +4218,35 @@
         // classified as Reference, not brand-specific menu items.
         // ============================================================
         const DRINKS = [
-            { id: 'espresso', name: 'إسبريسو', icon: '☕', detail: 'جرعة: 18g | نسبة: 1:2', source: 'Reference' },
-            { id: 'ristretto', name: 'ريستريتو', icon: '☕', detail: 'جرعة: 18g | نسبة: 1:1', source: 'Reference' },
-            { id: 'lungo', name: 'لونجو', icon: '☕', detail: 'جرعة: 18g | نسبة: 1:3', source: 'Reference' },
-            { id: 'americano', name: 'أمريكانو', icon: '☕', detail: 'إسبريسو + ماء ساخن', source: 'Reference' },
-            { id: 'cappuccino', name: 'كابتشينو', icon: '☕', detail: '1/3 إسبريسو + 1/3 حليب + 1/3 رغوة', source: 'Reference' },
-            { id: 'latte', name: 'لاتيه', icon: '☕', detail: '1/3 إسبريسو + 2/3 حليب مبخر', source: 'Reference' },
-            { id: 'mocha', name: 'موكا', icon: '☕', detail: 'إسبريسو + شوكولاتة + حليب', source: 'Reference' },
-            { id: 'flatwhite', name: 'فلات وايت', icon: '☕', detail: 'إسبريسو + حليب ميكروفوم', source: 'Reference' }
+            { id: 'espresso', name: 'إسبريسو', origin: 'إيطاليا', img: 'assets/drinks/espresso.jpg', detail: '1oz (30ml) | نسبة 1:2', source: 'Reference' },
+            { id: 'ristretto', name: 'ريستريتو', origin: 'إيطاليا', img: 'assets/drinks/ristretto.jpg', detail: '0.5oz (15ml) | نسبة 1:1 أو أقل', source: 'Reference' },
+            { id: 'lungo', name: 'لونجو', origin: 'إيطاليا', img: 'assets/drinks/lungo.jpg', detail: '2oz (60ml) | نسبة 1:3-1:4', source: 'Reference' },
+            { id: 'macchiato', name: 'ماكياتو', origin: 'إيطاليا', img: 'assets/drinks/macchiato.jpg', detail: '1oz إسبريسو + لمسة حليب', source: 'Reference' },
+            { id: 'espresso-romano', name: 'إسبريسو رومانو', origin: 'إيطاليا', img: 'assets/drinks/espresso_romano.jpg', detail: '1oz إسبريسو + ليمون', source: 'Reference' },
+            { id: 'affogato', name: 'أفوجاتو', origin: 'إيطاليا', img: 'assets/drinks/affogato.jpg', detail: '1-2oz إسبريسو + آيس كريم', source: 'Reference' },
+            { id: 'cortado', name: 'كورتادو', origin: 'إسبانيا', img: 'assets/drinks/cortado.jpg', detail: '1oz إسبريسو + 1oz حليب (1:1)', source: 'Reference' },
+            { id: 'piccolo-latte', name: 'بيكولو لاتيه', origin: 'أستراليا', img: 'assets/drinks/piccolo_latte.jpg', detail: '1oz ريستريتو + 2oz حليب', source: 'Reference' },
+            { id: 'breve', name: 'بريف', origin: 'أمريكا', img: 'assets/drinks/breve.jpg', detail: '1oz إسبريسو + 3oz كريمة نصف ونصف', source: 'Reference' },
+            { id: 'flatwhite', name: 'فلات وايت', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/flat_white.jpg', detail: '1oz إسبريسو + 2oz حليب ميكروفوم (2:1)', source: 'Reference' },
+            { id: 'americano', name: 'أمريكانو', origin: 'أمريكا', img: 'assets/drinks/americano.jpg', detail: '1oz إسبريسو + 3oz ماء ساخن', source: 'Reference' },
+            { id: 'long-black', name: 'لونج بلاك', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/long_black.jpg', detail: '2oz إسبريسو فوق 3oz ماء ساخن', source: 'Reference' },
+            { id: 'cafe-latte', name: 'كافيه لاتيه', origin: 'إيطاليا', img: 'assets/drinks/cafe_latte.jpg', detail: '1oz إسبريسو + 8-10oz حليب + رغوة خفيفة', source: 'Reference' },
+            { id: 'cappuccino', name: 'كابتشينو', origin: 'إيطاليا', img: 'assets/drinks/cappuccino.jpg', detail: '1-2oz إسبريسو + 2oz حليب + 2oz رغوة', source: 'Reference' }
         ];
 
         function renderDrinks() {
             const container = document.getElementById('drinkGrid');
             if (!container) return;
             container.innerHTML = DRINKS.map(d => `
-                <div class="coffee-card scroll-reveal" role="listitem" style="padding: var(--space-lg); text-align: center;">
-                    <div style="font-size: 40px; margin-bottom: var(--space-sm);" aria-hidden="true">${d.icon}</div>
-                    <h4 style="font-size: 16px;">${d.name}</h4>
-                    <p style="font-size: 13px; color: var(--coffee-brown);">${d.detail}</p>
+                <div class="coffee-card scroll-reveal" role="listitem" style="overflow: hidden; text-align: center;">
+                    <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden; background: rgba(23,18,15,0.04);">
+                        <img src="${d.img}" alt="${d.name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <div style="padding: var(--space-md) var(--space-sm);">
+                        <h4 style="font-size: 15px; margin-bottom: 2px;">${d.name}</h4>
+                        <p style="font-size: 11px; color: var(--gold); margin-bottom: 4px;">${d.origin}</p>
+                        <p style="font-size: 12px; color: var(--coffee-brown);">${d.detail}</p>
+                    </div>
                 </div>
             `).join('');
         }
@@ -4215,7 +4256,15 @@
         // General brewing-equipment reference, not brand-specific products.
         // ============================================================
         const EQUIPMENT = [
-            { id: 'espresso-machine', name: 'آلة إسبريسو', icon: '☕', level: 'متقدم', note: '' },
+            { id: 'dripper', name: 'دريبر (V60)', icon: '', img: 'assets/equipment/dripper.jpg', level: 'متوسط', note: 'طحن: متوسط ناعم | 92-96°C | 3-4 دقائق' },
+            { id: 'french-press', name: 'فرينش بريس', icon: '', img: 'assets/equipment/french_press.jpg', level: 'مبتدئ', note: 'طحن: خشن | 92-96°C | 4 دقائق' },
+            { id: 'aeropress', name: 'إيروبريس', icon: '', img: 'assets/equipment/aeropress.jpg', level: 'مبتدئ', note: 'طحن: ناعم | 80-96°C | دقيقتين' },
+            { id: 'moka-pot', name: 'موكا بوت', icon: '', img: 'assets/equipment/moka_pot.jpg', level: 'متوسط', note: 'طحن: متوسط ناعم | 99°C | 7 دقائق' },
+            { id: 'chemex', name: 'تشيمكس', icon: '', img: 'assets/equipment/chemex.jpg', level: 'متوسط', note: 'طحن: متوسط | 92-96°C | 4-5 دقائق' },
+            { id: 'syphon', name: 'سايفون', icon: '', img: 'assets/equipment/syphon.jpg', level: 'متقدم', note: 'طحن: ناعم | 90-94°C | 6-7 دقائق' },
+            { id: 'turkish-pot', name: 'قهاوي (تركية)', icon: '', img: 'assets/equipment/turkish.jpg', level: 'متوسط', note: 'طحن: ناعم جداً | غليان | 3-4 دقائق' },
+            { id: 'cold-brew-maker', name: 'إبريق كولد برو', icon: '', img: 'assets/equipment/cold_brew.jpg', level: 'مبتدئ', note: 'طحن: خشن جداً | ماء بارد | 12-18 ساعة' },
+            { id: 'espresso-machine', name: 'آلة إسبريسو', icon: '☕', img: 'assets/equipment/espresso_machine.jpg', level: 'متقدم', note: '' },
             { id: 'grinder', name: 'مطحنة قهوة', icon: '🔄', level: 'متوسط', note: '' },
             { id: 'scale', name: 'ميزان', icon: '⚖️', level: 'مبتدئ', note: 'دقة 0.1 جرام' },
             { id: 'kettle', name: 'غلاية', icon: '🌡️', level: 'متوسط', note: '' }
@@ -4225,11 +4274,24 @@
             const container = document.getElementById('equipmentGrid');
             if (!container) return;
             container.innerHTML = EQUIPMENT.map(e => `
-                <div class="coffee-card scroll-reveal" role="listitem" style="padding: var(--space-lg); text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: var(--space-sm);" aria-hidden="true">${e.icon}</div>
-                    <h4 style="font-size: 18px;">${e.name}</h4>
-                    <p style="font-size: 14px; color: var(--coffee-brown);">مستوى: ${e.level}</p>
-                    ${e.note ? `<p style="font-size: 13px; color: var(--coffee-brown);">${e.note}</p>` : ''}
+                <div class="coffee-card scroll-reveal" role="listitem" style="text-align: center; overflow: hidden;">
+                    ${e.img ? `
+                    <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden; background: rgba(23,18,15,0.04);">
+                        <img src="${e.img}" alt="${e.name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>
+                    <div style="padding: var(--space-md) var(--space-sm);">
+                        <h4 style="font-size: 16px;">${e.name}</h4>
+                        <p style="font-size: 12px; color: var(--gold);">مستوى: ${e.level}</p>
+                        ${e.note ? `<p style="font-size: 12px; color: var(--coffee-brown); margin-top: 4px;">${e.note}</p>` : ''}
+                    </div>
+                    ` : `
+                    <div style="padding: var(--space-lg);">
+                        <div style="font-size: 48px; margin-bottom: var(--space-sm);" aria-hidden="true">${e.icon}</div>
+                        <h4 style="font-size: 18px;">${e.name}</h4>
+                        <p style="font-size: 14px; color: var(--coffee-brown);">مستوى: ${e.level}</p>
+                        ${e.note ? `<p style="font-size: 13px; color: var(--coffee-brown);">${e.note}</p>` : ''}
+                    </div>
+                    `}
                 </div>
             `).join('');
         }
@@ -4280,7 +4342,7 @@
 
         const BREW_METHODS = [
             {
-                id: 'espresso', name: 'إسبريسو', nameEn: 'Espresso', icon: '☕',
+                id: 'espresso', name: 'إسبريسو', nameEn: 'Espresso', icon: '☕', img: 'assets/equipment/espresso_machine.jpg',
                 dose: '18 جرام', water: '36 جرام', ratio: '1:2', temperature: '92-94°C',
                 grind: 'ناعم', time: '27-30 ثانية',
                 equipment: ['آلة إسبريسو', 'مطحنة', 'ميزان'], difficulty: 'متقدم',
@@ -4289,16 +4351,16 @@
                 tips: 'استخدم قهوة طازجة مطحونة قبل الاستخلاص مباشرة'
             },
             {
-                id: 'v60', name: 'V60', nameEn: 'V60 Pour Over', icon: '🫖',
+                id: 'v60', name: 'V60', nameEn: 'V60 Pour Over', icon: '🫖', img: 'assets/equipment/dripper.jpg',
                 dose: '20 جرام', water: '320 مل', ratio: '1:16', temperature: '93°C',
-                grind: 'متوسط', time: '2-3 دقائق',
+                grind: 'متوسط ناعم', time: '2-3 دقائق',
                 equipment: ['فلتر V60', 'إبريق', 'ميزان', 'غلاية'], difficulty: 'متوسط',
                 flavorResult: 'نظيف، متوازن، معقد',
                 steps: ['اشطف الفلتر بالماء الساخن', 'أضف 20 جرام من القهوة المطحونة', 'قم بالتخمير الأولي بـ 40 مل لمدة 30 ثانية', 'صب الماء تدريجياً بحركات دائرية', 'استمر حتى تصل إلى 320 مل', 'اترك القهوة تتصفى لمدة 2-3 دقائق'],
                 tips: 'استخدم ماء بدرجة حرارة 93°C للنتائج المثالية'
             },
             {
-                id: 'french-press', name: 'فرينش بريس', nameEn: 'French Press', icon: '🫗',
+                id: 'french-press', name: 'فرينش بريس', nameEn: 'French Press', icon: '🫗', img: 'assets/equipment/french_press.jpg',
                 dose: '30 جرام', water: '360 مل', ratio: '1:12', temperature: '94°C',
                 grind: 'خشن', time: '4 دقائق',
                 equipment: ['فرينش بريس', 'ميزان', 'غلاية'], difficulty: 'مبتدئ',
@@ -4307,7 +4369,7 @@
                 tips: 'اضغط المكبس ببطء لتجنب الخلط الزائد'
             },
             {
-                id: 'turkish', name: 'قهوة تركية', nameEn: 'Turkish Coffee', icon: '🏺',
+                id: 'turkish', name: 'قهوة تركية', nameEn: 'Turkish Coffee', icon: '🏺', img: 'assets/equipment/turkish.jpg',
                 dose: '10 جرام', water: '75 مل', ratio: '1:7.5', temperature: 'غليان',
                 grind: 'ناعم جداً', time: '3-4 دقائق',
                 equipment: ['قهاوي', 'ملعقة', 'ميزان'], difficulty: 'متوسط',
@@ -4316,7 +4378,7 @@
                 tips: 'لا تحرك القهاوي أثناء الغليان لتجنب تكسير الرغوة'
             },
             {
-                id: 'chemex', name: 'تشيمكس', nameEn: 'Chemex', icon: '🧪',
+                id: 'chemex', name: 'تشيمكس', nameEn: 'Chemex', icon: '🧪', img: 'assets/equipment/chemex.jpg',
                 dose: '22 جرام', water: '374 مل', ratio: '1:17', temperature: '93°C',
                 grind: 'متوسط خشن', time: '3-4 دقائق',
                 equipment: ['تشيمكس', 'فلتر', 'ميزان', 'غلاية'], difficulty: 'متوسط',
@@ -4325,7 +4387,7 @@
                 tips: 'استخدم فلتر التشيمكس المخصص للحصول على أفضل النتائج'
             },
             {
-                id: 'cold-brew', name: 'كولد برو', nameEn: 'Cold Brew', icon: '🧊',
+                id: 'cold-brew', name: 'كولد برو', nameEn: 'Cold Brew', icon: '🧊', img: 'assets/equipment/cold_brew.jpg',
                 dose: '100 جرام', water: '1000 مل', ratio: '1:10', temperature: 'ماء بارد / غرفة',
                 grind: 'خشن جداً', time: '12-18 ساعة',
                 equipment: ['إبريق أو مرطبان', 'فلتر أو مصفاة قماش'], difficulty: 'مبتدئ',
@@ -4339,9 +4401,13 @@
             const container = document.getElementById('brewGrid');
             if (!container) return;
             container.innerHTML = BREW_METHODS.map(method => `
-                <div class="coffee-card scroll-reveal" onclick="openBrewDetail('${method.id}')" style="cursor: pointer;">
+                <div class="coffee-card scroll-reveal" onclick="openBrewDetail('${method.id}')" style="cursor: pointer; overflow: hidden;">
+                    ${method.img ? `
+                    <div style="width: 100%; aspect-ratio: 4/3; overflow: hidden; background: rgba(23,18,15,0.04);">
+                        <img src="${method.img}" alt="${method.name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                    </div>` : ''}
                     <div style="padding: var(--space-lg); text-align: center;">
-                        <div style="font-size: 48px; margin-bottom: var(--space-sm);">${method.icon}</div>
+                        ${method.img ? '' : `<div style="font-size: 48px; margin-bottom: var(--space-sm);">${method.icon}</div>`}
                         <h3 style="font-size: 18px; margin-bottom: var(--space-xs);">${method.name}</h3>
                         <div style="font-size: 14px; color: var(--coffee-brown);">${method.nameEn}</div>
                         <div style="margin: var(--space-sm) 0; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center;">
@@ -4366,7 +4432,7 @@
                 <div style="background: var(--beige); max-width: 700px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-2xl); max-height: 90vh; overflow-y: auto;">
                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-lg);">
                         <div>
-                            <div style="font-size: 48px;">${method.icon}</div>
+                            ${method.img ? `<img src="${method.img}" alt="${method.name}" style="width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); margin-bottom: var(--space-xs);">` : `<div style="font-size: 48px;">${method.icon}</div>`}
                             <h2 style="font-size: 24px;">${method.name}</h2>
                             <div style="color: var(--coffee-brown);">${method.nameEn}</div>
                         </div>
