@@ -6,6 +6,15 @@
     <title>JOSSEE COFFEE — قهوة مختصة</title>
     <meta name="description" content="Jossee Coffee - Premium specialty coffee roastery. قهوة مختصة عالية الجودة">
     <meta name="theme-color" content="#1F5C50">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="JOSSEE COFFEE — قهوة مختصة">
+    <meta property="og:description" content="Jossee Coffee - Premium specialty coffee roastery. قهوة مختصة عالية الجودة">
+    <meta property="og:image" content="assets/jossee-hero-cup.jpg">
+    <meta property="og:locale" content="ar_AR">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JOSSEE COFFEE — قهوة مختصة">
+    <meta name="twitter:description" content="Jossee Coffee - Premium specialty coffee roastery. قهوة مختصة عالية الجودة">
+    <meta name="twitter:image" content="assets/jossee-hero-cup.jpg">
     <!-- iOS "Add to Home Screen" support — Safari ignores the web manifest for
          standalone/status-bar behavior, so these are required separately. -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -185,6 +194,10 @@
            ============================================================ */
         .hero {
             min-height: 100vh;
+            min-height: 100svh; /* mobile browsers: 100vh includes the area
+                                    hidden behind the address bar, so the hero
+                                    ends up taller than what's actually visible
+                                    and pushes the CTA off-screen. svh fixes it. */
             display: flex;
             align-items: center;
             position: relative;
@@ -395,11 +408,14 @@
         .nav-toggle {
             display: none;
             flex-direction: column;
+            justify-content: center;
             gap: 5px;
             background: none;
             border: none;
             cursor: pointer;
-            padding: 4px;
+            padding: 10px;
+            min-width: 44px;
+            min-height: 44px;
         }
         
         .nav-toggle span {
@@ -783,10 +799,11 @@
             background: rgba(255,70,70,0.15);
             color: #FF6B6B;
             border: none;
-            padding: 6px 12px;
+            padding: 10px 16px;
+            min-height: 40px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             transition: all var(--transition-fast);
         }
         
@@ -837,6 +854,7 @@
             .hero {
                 padding: var(--space-xl) var(--space-md);
                 min-height: 90vh;
+                min-height: 90svh;
             }
             
             .hero-title {
@@ -885,6 +903,14 @@
             
             #detailContent > div:first-child {
                 height: 300px;
+            }
+
+            /* iOS Safari auto-zooms the page when a focused form field's
+               font-size is under 16px — several calculator/brew-log inputs
+               use 14-15px. Force 16px on mobile so tapping a field doesn't
+               suddenly zoom the whole page in. */
+            input, select, textarea {
+                font-size: 16px !important;
             }
         }
         
@@ -1095,17 +1121,61 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+
+        /* Every stacked label/value pair inside the detail card (origin,
+           processing method, caffeine, name, etc.) needs an explicit
+           line-height and breathing room — without it, the Arabic web font's
+           tall line metrics make consecutive short <div> lines render on top
+           of each other on narrow mobile screens. */
+        .coffee-detail-content h2,
+        .coffee-detail-content h3,
+        .coffee-detail-content h4 {
+            line-height: 1.3;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        .coffee-detail-content .detail-label {
+            font-size: 12px;
+            color: var(--coffee-brown);
+            line-height: 1.5;
+            margin-bottom: 2px;
+        }
+        .coffee-detail-content .detail-value {
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: var(--space-sm);
+            overflow-wrap: break-word;
+        }
+        .coffee-detail-content .detail-value:last-child { margin-bottom: 0; }
+        .coffee-detail-content [id^="detail"] {
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        @media (max-width: 480px) {
+            .coffee-detail-modal { padding: var(--space-sm); }
+            .coffee-detail-content { padding: var(--space-lg) var(--space-md); }
+            .coffee-detail-content h2#detailName { font-size: 22px; }
+        }
         
         .coffee-detail-close {
             position: absolute;
             top: var(--space-lg);
             left: var(--space-lg);
-            background: none;
+            background: rgba(255,255,255,0.85);
             border: none;
-            font-size: 32px;
+            font-size: 28px;
+            line-height: 1;
             cursor: pointer;
             color: var(--coffee-brown);
             transition: all var(--transition-fast);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
         }
         
         .coffee-detail-close:hover {
@@ -1186,6 +1256,119 @@
     </style>
     <style>
         /* ============================================================
+           SHOPPING CART
+           ============================================================ */
+        .cart-float-btn {
+            position: fixed;
+            bottom: 24px;
+            inset-inline-end: 24px;
+            z-index: 950;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--espresso-black);
+            color: var(--beige);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: transform var(--transition-fast);
+        }
+        .cart-float-btn:hover { transform: scale(1.08); }
+        .cart-badge {
+            position: absolute;
+            top: -4px;
+            inset-inline-end: -4px;
+            background: var(--gold);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+        @media (max-width: 768px) {
+            .cart-float-btn { bottom: 140px; inset-inline-end: 12px; width: 48px; height: 48px; font-size: 20px; }
+        }
+
+        .cart-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10500;
+            background: rgba(23, 18, 15, 0.6);
+            display: none;
+        }
+        .cart-drawer-overlay.active { display: block; }
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            inset-inline-end: 0;
+            width: min(420px, 100%);
+            background: var(--beige);
+            z-index: 10501;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+        }
+        [dir="rtl"] .cart-drawer, html:not([dir]) .cart-drawer { transform: translateX(100%); }
+        .cart-drawer-overlay.active .cart-drawer { transform: translateX(0); }
+        .cart-drawer-header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid rgba(23,18,15,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .cart-drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-lg);
+        }
+        .cart-drawer-footer {
+            padding: var(--space-lg);
+            border-top: 1px solid rgba(23,18,15,0.08);
+            background: var(--cream);
+        }
+        .cart-item {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(23,18,15,0.06);
+        }
+        .cart-item img {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .cart-item-name { font-weight: 700; font-size: 14px; line-height: 1.4; margin-bottom: 4px; }
+        .cart-item-meta { font-size: 12px; color: var(--coffee-brown); line-height: 1.5; margin-bottom: 6px; }
+        .cart-qty-group { display: flex; align-items: center; gap: 8px; }
+        .cart-qty-btn {
+            width: 26px; height: 26px; border-radius: 50%;
+            border: 1px solid rgba(23,18,15,0.15); background: #fff;
+            cursor: pointer; font-size: 14px; line-height: 1;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .cart-item-remove {
+            background: transparent; border: none; color: var(--coffee-brown);
+            text-decoration: underline; font-size: 12px; cursor: pointer;
+            font-family: inherit; margin-inline-start: auto;
+        }
+        .cart-empty { text-align: center; padding: var(--space-2xl) var(--space-md); color: var(--coffee-brown); }
+    </style>
+    <style>
+        /* ============================================================
            INSTALL / ADD-TO-HOME-SCREEN BANNER
            ============================================================ */
         .install-banner {
@@ -1244,9 +1427,10 @@
             border: none;
             color: var(--cream);
             opacity: 0.7;
-            font-size: 16px;
+            font-size: 18px;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 12px;
+            margin: -12px;
             flex-shrink: 0;
         }
         .install-banner-close:hover { opacity: 1; }
@@ -1291,6 +1475,34 @@
     </div>
 
     <!-- ============================================================
+       SHOPPING CART — floating button + slide-in drawer
+       ============================================================ -->
+    <button id="cartFloatBtn" class="cart-float-btn" type="button" aria-label="سلة المشتروات">
+        🛒
+        <span id="cartBadge" class="cart-badge" style="display:none;">0</span>
+    </button>
+
+    <div id="cartOverlay" class="cart-drawer-overlay">
+        <div class="cart-drawer" role="dialog" aria-modal="true" aria-label="سلة المشتروات">
+            <div class="cart-drawer-header">
+                <h3 style="font-size: 18px;">🛒 سلة المشتروات</h3>
+                <button id="cartCloseBtn" type="button" aria-label="إغلاق" style="background: rgba(23,18,15,0.06); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer;">&times;</button>
+            </div>
+            <div id="cartBody" class="cart-drawer-body"></div>
+            <div id="cartFooter" class="cart-drawer-footer" style="display:none;">
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: var(--space-md);">
+                    <span style="font-weight:700;">الإجمالي</span>
+                    <span id="cartTotal" style="font-size:22px; font-weight:900;"></span>
+                </div>
+                <button id="cartWhatsAppBtn" type="button" class="btn btn-primary" style="width:100%; justify-content:center; padding:14px; font-size:15px; background:#25D366; border-color:#25D366;">
+                    📱 إرسال الطلب عبر واتساب
+                </button>
+                <button id="cartClearBtn" type="button" style="width:100%; margin-top: var(--space-sm); background: transparent; border: none; color: var(--coffee-brown); text-decoration: underline; cursor: pointer; font-size: 13px; font-family: inherit;">إفراغ السلة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
        NAVIGATION
        ============================================================ -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
@@ -1321,14 +1533,35 @@
     <!-- ============================================================
        HERO SECTION
        ============================================================ -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <img src="assets/jossee-hero-cup.jpg" alt="قهوة تركية بكوب Jossee الأصلي" loading="eager" fetchpriority="high" width="1920" height="1287">
+        </div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">✦ Premium Coffee Roastery</div>
+            <h1 class="hero-title">
+                JOSSEE
+                <span class="latin-text">COFFEE, CRAFTED WITH CHARACTER</span>
+            </h1>
+            <p class="hero-subtitle">
+                من الحبة... إلى الفنجان.<br>
+                قهوة مختصة بنكهة فريدة وروح أصيلة.
+            </p>
+            <div class="hero-cta-group">
+                <a href="#coffee" class="btn btn-primary">استكشف القهوة</a>
+                <a href="#lab" class="btn btn-secondary">مختبر القهوة</a>
+            </div>
+        </div>
+    </section>
+
     <!-- ============================================================
-       OUR STORY — moved to lead the page, right after the hero,
-       as the brand's introduction (matches nav order: Home → Story → ...)
+       OUR STORY — right after the hero, as the brand's introduction
+       (matches nav order: Home → Story → ...)
        ============================================================ -->
     <section id="story" style="background: var(--beige);">
         <div class="container grid-2" style="align-items: center;">
             <div class="coffee-image scroll-reveal" style="height: 450px;">
-                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
+                <img src="assets/equipment/grinder.jpg" alt="طحن حبوب القهوة الطازجة" loading="lazy" width="600" height="600">
             </div>
             <div class="scroll-reveal">
                 <span class="section-label" style="text-align: right;">OUR STORY</span>
@@ -1346,30 +1579,6 @@
                     نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
                     حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
                 </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       HERO SECTION
-       ============================================================ -->
-    <section class="hero" id="home">
-        <div class="hero-background">
-            <img src="assets/jossee-hero-cup.jpg" alt="قهوة تركية بكوب Jossee الأصلي" loading="eager" fetchpriority="high">
-        </div>
-        <div class="hero-content">
-            <div class="hero-eyebrow">✦ Premium Coffee Roastery</div>
-            <h1 class="hero-title">
-                JOSSEE
-                <span class="latin-text">COFFEE, CRAFTED WITH CHARACTER</span>
-            </h1>
-            <p class="hero-subtitle">
-                من الحبة... إلى الفنجان.<br>
-                قهوة مختصة بنكهة فريدة وروح أصيلة.
-            </p>
-            <div class="hero-cta-group">
-                <a href="#coffee" class="btn btn-primary">استكشف القهوة</a>
-                <a href="#lab" class="btn btn-secondary">مختبر القهوة</a>
             </div>
         </div>
     </section>
@@ -1450,7 +1659,7 @@
                 </p>
             </div>
             <div class="coffee-image scroll-reveal" style="height: 400px;">
-                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Coffee brewing" loading="lazy">
+                <img src="assets/equipment/chemex.jpg" alt="تحضير القهوة بطريقة Chemex" loading="lazy" width="273" height="303">
             </div>
         </div>
     </section>
@@ -1465,27 +1674,27 @@
                 <h2 class="section-title">استكشف النكهات</h2>
             </div>
             <div class="grid-3" id="flavorGrid">
-                <div class="flavor-tag-chocolate" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-chocolate" onclick="goToFlavor('chocolate')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🍫</div>
                     <div style="font-weight: 700;">شوكولاتة</div>
                 </div>
-                <div class="flavor-tag-nutty" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-nutty" onclick="goToFlavor('nutty')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🥜</div>
                     <div style="font-weight: 700;">جوزي</div>
                 </div>
-                <div class="flavor-tag-berry" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-berry" onclick="goToFlavor('fruity')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🫐</div>
                     <div style="font-weight: 700;">توت بري</div>
                 </div>
-                <div class="flavor-tag-citrus" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-citrus" onclick="goToFlavor('fruity')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🍊</div>
                     <div style="font-weight: 700;">حمضيات</div>
                 </div>
-                <div class="flavor-tag-floral" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-floral" onclick="goToFlavor('floral')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🌸</div>
                     <div style="font-weight: 700;">زهري</div>
                 </div>
-                <div class="flavor-tag-spicy" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center;">
+                <div class="flavor-tag-spicy" onclick="goToFlavor('spicy')" role="button" tabindex="0" style="padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; cursor: pointer; transition: transform var(--transition-fast);">
                     <div style="font-size: 32px; margin-bottom: var(--space-sm);">🌶️</div>
                     <div style="font-weight: 700;">حار</div>
                 </div>
@@ -1531,33 +1740,33 @@
                         <path d="M250 250 L98.6 148.6 A220 220 0 0 1 250 30 Z" fill="rgba(120, 100, 80, 0.25)" stroke="rgba(120, 100, 80, 0.4)" stroke-width="1" class="flavor-segment" data-flavor="earthy"/>
                         
                         <circle cx="250" cy="250" r="30" fill="var(--espresso-black)" opacity="0.9"/>
-                        <text x="250" y="245" text-anchor="middle" fill="var(--gold-light)" font-size="10" font-weight="700" transform="rotate(90, 250, 250)">نكهات</text>
-                        <text x="250" y="260" text-anchor="middle" fill="var(--gold-light)" font-size="10" font-weight="700" transform="rotate(90, 250, 250)">القهوة</text>
+                        <text x="250" y="245" text-anchor="middle" fill="var(--gold-light)" font-size="12" font-weight="700" transform="rotate(90, 250, 250)">نكهات</text>
+                        <text x="250" y="260" text-anchor="middle" fill="var(--gold-light)" font-size="12" font-weight="700" transform="rotate(90, 250, 250)">القهوة</text>
                         
                         <!-- Labels -->
                         <g transform="rotate(0, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">سكري</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">سكري</text>
                         </g>
                         <g transform="rotate(45, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">فاكهي</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">فاكهي</text>
                         </g>
                         <g transform="rotate(90, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">زهري</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">زهري</text>
                         </g>
                         <g transform="rotate(135, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">حار</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">حار</text>
                         </g>
                         <g transform="rotate(180, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">جوزي</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">جوزي</text>
                         </g>
                         <g transform="rotate(225, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">شوكولاتة</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">شوكولاتة</text>
                         </g>
                         <g transform="rotate(270, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">محمص</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">محمص</text>
                         </g>
                         <g transform="rotate(315, 250, 250)">
-                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="11" font-weight="700">ترابي</text>
+                            <text x="250" y="18" text-anchor="middle" fill="var(--coffee-brown)" font-size="14" font-weight="700">ترابي</text>
                         </g>
                     </svg>
                 </div>
@@ -1591,7 +1800,8 @@
                         <div id="flavorMultiBlendBox" style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(23,18,15,0.06); display: none;">
                             <div style="font-size: 14px; color: var(--coffee-brown); margin-bottom: var(--space-sm);">مفيش صنف واحد يجمع كل النكهات دي، لكن جرّب المزيج ده:</div>
                             <div id="flavorMultiBlendList" style="font-size: 14px; font-weight: 600; margin-bottom: var(--space-md);"></div>
-                            <button id="flavorMultiBlendBtn" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 14px;" type="button">🧪 افتح هذا المزيج في صانع المزيج</button>
+                            <button id="flavorMultiCartBtn" style="width: 100%; padding: 12px; font-size: 14px; background: var(--gold); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-weight: 700; margin-bottom: var(--space-sm);" type="button">🛒 أضف هذا المزيج للسلة مباشرة</button>
+                            <button id="flavorMultiBlendBtn" class="btn btn-outline" style="width: 100%; padding: 12px; font-size: 14px;" type="button">🧪 عايز أظبط النسب بنفسي — افتحه في صانع المزيج الكامل</button>
                         </div>
                         <button id="flavorMultiClear" style="margin-top: var(--space-md); background: transparent; border: none; color: var(--coffee-brown); text-decoration: underline; cursor: pointer; font-size: 13px; font-family: inherit;" type="button">✕ إلغاء الاختيار وابدأ من جديد</button>
                     </div>
@@ -2291,10 +2501,10 @@
                         <span id="detailBestFor2" style="padding: 6px 16px; background: rgba(90,56,40,0.08); border-radius: 20px; font-size: 13px;"></span>
                     </div>
                     <div style="margin-top: var(--space-md); padding: var(--space-md); background: rgba(23,18,15,0.04); border-radius: var(--radius-sm);">
-                        <div style="font-size: 12px; color: var(--coffee-brown);">طريقة المعالجة</div>
-                        <div id="detailProcess" style="font-weight: 600;"></div>
-                        <div style="font-size: 12px; color: var(--coffee-brown); margin-top: var(--space-xs);">الكافيين</div>
-                        <div id="detailCaffeine" style="font-weight: 600;"></div>
+                        <div class="detail-label">طريقة المعالجة</div>
+                        <div id="detailProcess" class="detail-value"></div>
+                        <div class="detail-label">الكافيين</div>
+                        <div id="detailCaffeine" class="detail-value"></div>
                     </div>
                 </div>
                 <div>
@@ -2336,10 +2546,22 @@
                         </div>
                     </div>
                     
-                    <button id="detailCompareBtn" style="margin-top: var(--space-md); width: 100%; padding: 12px; background: var(--coffee-brown); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">
+                    <div style="margin-top: var(--space-md); display: flex; align-items: center; gap: var(--space-md);">
+                        <span style="font-size: 13px; font-weight: 700;">الكمية</span>
+                        <div class="cart-qty-group">
+                            <button type="button" id="detailQtyMinus" class="cart-qty-btn">−</button>
+                            <span id="detailQtyValue" style="min-width: 20px; text-align: center; font-weight: 700;">1</span>
+                            <button type="button" id="detailQtyPlus" class="cart-qty-btn">+</button>
+                        </div>
+                    </div>
+
+                    <button id="addToCartBtn" style="margin-top: var(--space-md); width: 100%; padding: 14px; background: var(--gold); color: #fff; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">
+                        🛒 أضف للسلة
+                    </button>
+                    <button id="detailCompareBtn" style="margin-top: var(--space-sm); width: 100%; padding: 12px; background: var(--coffee-brown); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">
                         📊 مقارنة هذا النوع
                     </button>
-                    <div id="detailPriceTiers" style="display:none;"></div>
+                    <div id="detailPriceTiers" style="display:none; overflow-x: auto;"></div>
                 </div>
             </div>
         </div>
@@ -4136,21 +4358,26 @@
 
             const limited = LIMITED_ADDONS[coffee.id];
             wrapper.style.display = 'block';
-            if (limited) {
-                container.innerHTML = `
-                    <p style="font-size: 12px; color: var(--coffee-brown); margin-bottom: 6px;">${L('إضافات محدودة لهذا الصنف (بيُطحن مباشرة بعد التحميص):', 'Limited add-ons for this item (ground right after roasting):')}</p>
-                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                        ${limited.map(n => `<span style="padding: 4px 12px; background: rgba(90,56,40,0.08); border-radius: 20px; font-size: 12px;">${n}</span>`).join('')}
-                    </div>`;
-            } else {
-                container.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13px;">
-                        ${STANDARD_ADDONS.map(a => `
-                            <span>${T(a.name)}${a.note ? ` <span style="color: var(--coffee-brown); font-size: 11px;">(${T(a.note)})</span>` : ''}</span>
-                            <span style="font-weight: 700;">${a.price}${L(' ج', ' EGP')}</span>
-                        `).join('')}
-                    </div>`;
-            }
+            const list = limited
+                ? limited.map(n => ({ name: n, price: 0 }))
+                : STANDARD_ADDONS;
+            const helperText = limited
+                ? L('إضافات محدودة لهذا الصنف (بيُطحن مباشرة بعد التحميص):', 'Limited add-ons for this item (ground right after roasting):')
+                : L('اختر أي إضافات تحبها (اختياري):', 'Pick any add-ons you\'d like (optional):');
+
+            container.innerHTML = `
+                <p style="font-size: 12px; color: var(--coffee-brown); margin-bottom: 8px;">${helperText}</p>
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    ${list.map((a, i) => `
+                        <label style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: rgba(90,56,40,0.05); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer;">
+                            <span style="display:flex; align-items:center; gap:8px;">
+                                <input type="checkbox" class="addon-checkbox" data-addon-index="${i}" data-addon-name="${T(a.name)}" data-addon-price="${a.price}">
+                                ${T(a.name)}${a.note ? ` <span style="color: var(--coffee-brown); font-size: 11px;">(${T(a.note)})</span>` : ''}
+                            </span>
+                            <span style="font-weight: 700;">${a.price > 0 ? a.price + L(' ج', ' EGP') : L('مجاني', 'Free')}</span>
+                        </label>
+                    `).join('')}
+                </div>`;
         }
 
         function openCoffeeDetail(id) {
@@ -4238,6 +4465,37 @@
                     }
                 }, 500);
             };
+
+            // Reset qty stepper to 1 every time a (possibly different) product opens
+            let detailQty = 1;
+            const qtyValueEl = document.getElementById('detailQtyValue');
+            qtyValueEl.textContent = '1';
+            document.getElementById('detailQtyMinus').onclick = function() {
+                detailQty = Math.max(1, detailQty - 1);
+                qtyValueEl.textContent = detailQty;
+            };
+            document.getElementById('detailQtyPlus').onclick = function() {
+                detailQty = Math.min(99, detailQty + 1);
+                qtyValueEl.textContent = detailQty;
+            };
+
+            document.getElementById('addToCartBtn').onclick = function() {
+                const addons = [...document.querySelectorAll('.addon-checkbox:checked')].map(cb => ({
+                    name: cb.dataset.addonName,
+                    price: parseFloat(cb.dataset.addonPrice) || 0
+                }));
+                addToCart({
+                    id: coffee.id,
+                    name: T(coffee.name),
+                    price: coffee.price,
+                    weight: coffee.weight,
+                    img: getCoffeeImage(coffee.id),
+                    qty: detailQty,
+                    addons
+                });
+                this.textContent = L('✓ تمت الإضافة', '✓ Added');
+                setTimeout(() => { this.innerHTML = '🛒 ' + L('أضف للسلة', 'Add to cart'); }, 1400);
+            };
         }
 
         document.getElementById('closeDetailBtn').addEventListener('click', function() {
@@ -4251,6 +4509,176 @@
                 document.body.style.overflow = '';
             }
         });
+
+        // Lets the flavor wheel's suggested blend go straight into the cart
+        // as one custom line — without forcing a long scroll down to the
+        // full Blend Builder lab. Price is a weighted average (by % share)
+        // of the component coffees' price-per-gram, for a standard 250g bag.
+        function addFlavorBlendToCart(coffeeNames, equalVal) {
+            const BLEND_BAG_WEIGHT = 250;
+            const coffees = coffeeNames
+                .map(name => COFFEES.find(c => c.name === name))
+                .filter(Boolean);
+            if (coffees.length < 2) return;
+
+            const remainder = 100 - equalVal * coffees.length;
+            let pricePerGramTotal = 0;
+            const parts = coffees.map((c, i) => {
+                const pct = (equalVal + (i === 0 ? remainder : 0)) / 100;
+                pricePerGramTotal += pct * (c.price / c.weight);
+                return `${Math.round(pct * 100)}% ${T(c.name)}`;
+            });
+            const blendPrice = Math.round(pricePerGramTotal * BLEND_BAG_WEIGHT);
+
+            addToCart({
+                id: 'custom-blend-' + coffees.map(c => c.id).join('-'),
+                name: L('مزيج خاص: ', 'Custom blend: ') + parts.join(' + '),
+                price: blendPrice,
+                weight: BLEND_BAG_WEIGHT,
+                img: getCoffeeImage(coffees[0].id),
+                qty: 1,
+                addons: []
+            });
+        }
+
+        // ============================================================
+        // SHOPPING CART
+        // ============================================================
+        const CART_STORAGE_KEY = 'jossee_cart';
+        let cart = [];
+        try { cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || []; } catch (e) { cart = []; }
+
+        function saveCart() {
+            try { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); } catch (e) {}
+        }
+
+        function cartLineKey(id, addons) {
+            return id + '::' + addons.map(a => a.name).sort().join(',');
+        }
+
+        function addToCart(item) {
+            const key = cartLineKey(item.id, item.addons);
+            const existing = cart.find(c => cartLineKey(c.id, c.addons) === key);
+            if (existing) {
+                existing.qty += item.qty;
+            } else {
+                cart.push(item);
+            }
+            saveCart();
+            renderCart();
+            updateCartBadge();
+        }
+
+        function removeCartLine(index) {
+            cart.splice(index, 1);
+            saveCart();
+            renderCart();
+            updateCartBadge();
+        }
+
+        function changeCartQty(index, delta) {
+            cart[index].qty = Math.max(1, cart[index].qty + delta);
+            saveCart();
+            renderCart();
+            updateCartBadge();
+        }
+
+        function cartLineTotal(item) {
+            const addonsTotal = item.addons.reduce((s, a) => s + (a.price || 0), 0);
+            return (item.price + addonsTotal) * item.qty;
+        }
+
+        function cartGrandTotal() {
+            return cart.reduce((sum, item) => sum + cartLineTotal(item), 0);
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (!badge) return;
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function renderCart() {
+            const body = document.getElementById('cartBody');
+            const footer = document.getElementById('cartFooter');
+            if (!body) return;
+
+            if (cart.length === 0) {
+                body.innerHTML = `<div class="cart-empty">🛒<br>${L('سلة المشتروات فاضية دلوقتي', 'Your cart is empty right now')}</div>`;
+                footer.style.display = 'none';
+                return;
+            }
+
+            footer.style.display = 'block';
+            body.innerHTML = cart.map((item, i) => `
+                <div class="cart-item">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div style="flex:1; min-width:0;">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-meta">${item.weight}${L(' جم', 'g')} · ${item.price}${L(' ج', ' EGP')}${item.addons.length ? '<br>+ ' + item.addons.map(a => a.name).join('، ') : ''}</div>
+                        <div style="display:flex; align-items:center; gap: var(--space-md);">
+                            <div class="cart-qty-group">
+                                <button type="button" class="cart-qty-btn" onclick="changeCartQty(${i}, -1)">−</button>
+                                <span style="min-width:16px; text-align:center; font-weight:700;">${item.qty}</span>
+                                <button type="button" class="cart-qty-btn" onclick="changeCartQty(${i}, 1)">+</button>
+                            </div>
+                            <span style="font-weight:800; font-size:13px;">${cartLineTotal(item)}${L(' ج', ' EGP')}</span>
+                            <button type="button" class="cart-item-remove" onclick="removeCartLine(${i})">${L('إزالة', 'Remove')}</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('cartTotal').textContent = cartGrandTotal() + L(' ج', ' EGP');
+        }
+
+        function openCartDrawer() {
+            document.getElementById('cartOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            renderCart();
+        }
+        function closeCartDrawer() {
+            document.getElementById('cartOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('cartFloatBtn')?.addEventListener('click', openCartDrawer);
+        document.getElementById('cartCloseBtn')?.addEventListener('click', closeCartDrawer);
+        document.getElementById('cartOverlay')?.addEventListener('click', function(e) {
+            if (e.target === this) closeCartDrawer();
+        });
+        document.getElementById('cartClearBtn')?.addEventListener('click', function() {
+            if (cart.length && !confirm(L('تفريغ السلة بالكامل؟', 'Clear the whole cart?'))) return;
+            cart = [];
+            saveCart();
+            renderCart();
+            updateCartBadge();
+        });
+
+        document.getElementById('cartWhatsAppBtn')?.addEventListener('click', function() {
+            if (cart.length === 0) return;
+            const lines = cart.map(item => {
+                const addonsText = item.addons.length ? ` (+ ${item.addons.map(a => a.name).join('، ')})` : '';
+                return `• ${item.name}${addonsText} × ${item.qty} = ${cartLineTotal(item)} ${L('ج', 'EGP')}`;
+            });
+            const message = [
+                L('طلب جديد من موقع Jossee Coffee 🛍️', 'New order from Jossee Coffee website 🛍️'),
+                '',
+                ...lines,
+                '',
+                `${L('الإجمالي', 'Total')}: ${cartGrandTotal()} ${L('ج', 'EGP')}`
+            ].join('\n');
+            const url = `https://wa.me/201281300002?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank', 'noopener');
+        });
+
+        updateCartBadge();
 
         // ============================================================
         // 96. SCROLL REVEAL
@@ -4485,6 +4913,16 @@
 
         const selectedFlavors = new Set();
 
+        // Called by the 6 "Flavor Explorer" cards above the wheel — selects
+        // that segment on the wheel itself and scrolls down to it, so the
+        // cards feel connected to the wheel instead of being decorative.
+        function goToFlavor(flavorKey) {
+            selectedFlavors.clear();
+            selectedFlavors.add(flavorKey);
+            renderFlavorPanel();
+            document.getElementById('flavor-wheel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         function renderFlavorPanel() {
             const default_ = document.getElementById('flavorDefault');
             const info = document.getElementById('flavorInfo');
@@ -4562,6 +5000,13 @@
                         chosen.map(c => `${equalVal}% ${T(c)}`).join('  +  ');
                     const btn = document.getElementById('flavorMultiBlendBtn');
                     btn.onclick = () => applyFlavorBlend(chosen);
+
+                    const cartBtn = document.getElementById('flavorMultiCartBtn');
+                    cartBtn.onclick = function() {
+                        addFlavorBlendToCart(chosen, equalVal);
+                        this.textContent = L('✓ اتضاف للسلة', '✓ Added to cart');
+                        setTimeout(() => { this.innerHTML = '🛒 ' + L('أضف هذا المزيج للسلة مباشرة', 'Add this blend to cart directly'); }, 1600);
+                    };
                 } else {
                     blendBox.style.display = 'none';
                 }
@@ -5070,7 +5515,7 @@
                         </div>
                         <div style="display: flex; gap: var(--space-sm);">
                             <button class="load-blend-btn" data-id="${b.id}" style="padding: 6px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: var(--beige); border-radius: var(--radius-sm); cursor: pointer;">${L('تحميل', 'Load')}</button>
-                            <button class="delete-blend-btn" data-id="${b.id}" style="padding: 6px 16px; background: rgba(255,70,70,0.1); border: 1px solid rgba(255,70,70,0.2); color: #FF6B6B; border-radius: var(--radius-sm); cursor: pointer;">✕</button>
+                            <button class="delete-blend-btn" data-id="${b.id}" style="padding: 10px 18px; min-height: 40px; background: rgba(255,70,70,0.1); border: 1px solid rgba(255,70,70,0.2); color: #FF6B6B; border-radius: var(--radius-sm); cursor: pointer;">✕</button>
                         </div>
                     </div>
                 `).join('');
@@ -5223,27 +5668,41 @@
         // classified as Reference, not brand-specific menu items.
         // ============================================================
         const DRINKS = [
-            { id: 'espresso', name: 'إسبريسو', origin: 'إيطاليا', img: 'assets/drinks/espresso.jpg', detail: '1oz (30ml) | نسبة 1:2', source: 'Reference' },
-            { id: 'ristretto', name: 'ريستريتو', origin: 'إيطاليا', img: 'assets/drinks/ristretto.jpg', detail: '0.5oz (15ml) | نسبة 1:1 أو أقل', source: 'Reference' },
-            { id: 'lungo', name: 'لونجو', origin: 'إيطاليا', img: 'assets/drinks/lungo.jpg', detail: '2oz (60ml) | نسبة 1:3-1:4', source: 'Reference' },
-            { id: 'macchiato', name: 'ماكياتو', origin: 'إيطاليا', img: 'assets/drinks/macchiato.jpg', detail: '1oz إسبريسو + لمسة حليب', source: 'Reference' },
-            { id: 'espresso-romano', name: 'إسبريسو رومانو', origin: 'إيطاليا', img: 'assets/drinks/espresso_romano.jpg', detail: '1oz إسبريسو + ليمون', source: 'Reference' },
-            { id: 'affogato', name: 'أفوجاتو', origin: 'إيطاليا', img: 'assets/drinks/affogato.jpg', detail: '1-2oz إسبريسو + آيس كريم', source: 'Reference' },
-            { id: 'cortado', name: 'كورتادو', origin: 'إسبانيا', img: 'assets/drinks/cortado.jpg', detail: '1oz إسبريسو + 1oz حليب (1:1)', source: 'Reference' },
-            { id: 'piccolo-latte', name: 'بيكولو لاتيه', origin: 'أستراليا', img: 'assets/drinks/piccolo_latte.jpg', detail: '1oz ريستريتو + 2oz حليب', source: 'Reference' },
-            { id: 'breve', name: 'بريف', origin: 'أمريكا', img: 'assets/drinks/breve.jpg', detail: '1oz إسبريسو + 3oz كريمة نصف ونصف', source: 'Reference' },
-            { id: 'flatwhite', name: 'فلات وايت', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/flat_white.jpg', detail: '1oz إسبريسو + 2oz حليب ميكروفوم (2:1)', source: 'Reference' },
-            { id: 'americano', name: 'أمريكانو', origin: 'أمريكا', img: 'assets/drinks/americano.jpg', detail: '1oz إسبريسو + 3oz ماء ساخن', source: 'Reference' },
-            { id: 'long-black', name: 'لونج بلاك', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/long_black.jpg', detail: '2oz إسبريسو فوق 3oz ماء ساخن', source: 'Reference' },
-            { id: 'cafe-latte', name: 'كافيه لاتيه', origin: 'إيطاليا', img: 'assets/drinks/cafe_latte.jpg', detail: '1oz إسبريسو + 8-10oz حليب + رغوة خفيفة', source: 'Reference' },
-            { id: 'cappuccino', name: 'كابتشينو', origin: 'إيطاليا', img: 'assets/drinks/cappuccino.jpg', detail: '1-2oz إسبريسو + 2oz حليب + 2oz رغوة', source: 'Reference' }
+            { id: 'espresso', name: 'إسبريسو', origin: 'إيطاليا', img: 'assets/drinks/espresso.jpg', detail: '1oz (30ml) | نسبة 1:2', source: 'Reference',
+              steps: ['اطحن 18 جرام قهوة طحناً ناعماً', 'وزّع القهوة بالتساوي في السلة واضغطها بثبات', 'شغّل الاستخلاص 27-30 ثانية', 'استهدف ناتج 30 مل (نسبة 1:2)'] },
+            { id: 'ristretto', name: 'ريستريتو', origin: 'إيطاليا', img: 'assets/drinks/ristretto.jpg', detail: '0.5oz (15ml) | نسبة 1:1 أو أقل', source: 'Reference',
+              steps: ['اطحن القهوة ناعماً مثل الإسبريسو بالضبط', 'استخدم نفس جرعة الإسبريسو (18 جرام)', 'أوقف الاستخلاص عند 15 مل فقط', 'النتيجة: مذاق أكثر تركيزاً وحلاوة'] },
+            { id: 'lungo', name: 'لونجو', origin: 'إيطاليا', img: 'assets/drinks/lungo.jpg', detail: '2oz (60ml) | نسبة 1:3-1:4', source: 'Reference',
+              steps: ['اطحن القهوة ناعماً مثل الإسبريسو', 'استخدم نفس جرعة الإسبريسو (18 جرام)', 'أطل وقت الاستخلاص حتى يصل الناتج إلى 60-72 مل', 'توقع مرارة أوضح قليلاً من الإسبريسو العادي'] },
+            { id: 'macchiato', name: 'ماكياتو', origin: 'إيطاليا', img: 'assets/drinks/macchiato.jpg', detail: '1oz إسبريسو + لمسة حليب', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو عادي (30 مل)', 'بخّر القليل من الحليب حتى يتكوّن رغوة كثيفة', 'ضع ملعقة صغيرة من رغوة الحليب فوق الإسبريسو مباشرة', 'قدّمها فوراً وهي ساخنة'] },
+            { id: 'espresso-romano', name: 'إسبريسو رومانو', origin: 'إيطاليا', img: 'assets/drinks/espresso_romano.jpg', detail: '1oz إسبريسو + ليمون', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو عادي', 'قطّع شريحة رفيعة من قشر الليمون', 'قدّم الإسبريسو مع شريحة الليمون بجانبه على طبق صغير', 'يمكن مسح حافة الفنجان بالقشرة قبل التقديم لنكهة أقوى'] },
+            { id: 'affogato', name: 'أفوجاتو', origin: 'إيطاليا', img: 'assets/drinks/affogato.jpg', detail: '1-2oz إسبريسو + آيس كريم', source: 'Reference',
+              steps: ['ضع كرة أو كرتين من آيس كريم الفانيليا في كوب أو طبق تقديم', 'حضّر شوت إسبريسو ساخن طازج (30-60 مل)', 'اسكب الإسبريسو فوق الآيس كريم مباشرة قبل التقديم', 'قدّمها فوراً قبل أن يذوب الآيس كريم بالكامل'] },
+            { id: 'cortado', name: 'كورتادو', origin: 'إسبانيا', img: 'assets/drinks/cortado.jpg', detail: '1oz إسبريسو + 1oz حليب (1:1)', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو (30 مل)', 'بخّر الحليب برغوة خفيفة جداً (ميكروفوم)', 'أضف كمية حليب مساوية لكمية الإسبريسو (1:1)', 'قلّب بلطف وقدّمها في كوب صغير'] },
+            { id: 'piccolo-latte', name: 'بيكولو لاتيه', origin: 'أستراليا', img: 'assets/drinks/piccolo_latte.jpg', detail: '1oz ريستريتو + 2oz حليب', source: 'Reference',
+              steps: ['حضّر شوت ريستريتو (15 مل)', 'بخّر الحليب برغوة ناعمة (ميكروفوم)', 'أضف 60 مل من الحليب المبخر فوق الريستريتو', 'قدّمها في كوب صغير (3oz)'] },
+            { id: 'breve', name: 'بريف', origin: 'أمريكا', img: 'assets/drinks/breve.jpg', detail: '1oz إسبريسو + 3oz كريمة نصف ونصف', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو (30 مل)', 'بخّر كريمة "نصف ونصف" (half & half) بدلاً من الحليب العادي', 'أضف 90 مل منها فوق الإسبريسو', 'النتيجة قوام أغنى وأكثر دسامة من اللاتيه العادي'] },
+            { id: 'flatwhite', name: 'فلات وايت', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/flat_white.jpg', detail: '1oz إسبريسو + 2oz حليب ميكروفوم (2:1)', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو (30 مل)', 'بخّر الحليب برغوة دقيقة جداً (ميكروفوم كثيف وناعم)', 'أضف 60 مل من الحليب مع الحفاظ على نسبة رغوة قليلة', 'اسكب برفق للحصول على قوام كريمي متجانس'] },
+            { id: 'americano', name: 'أمريكانو', origin: 'أمريكا', img: 'assets/drinks/americano.jpg', detail: '1oz إسبريسو + 3oz ماء ساخن', source: 'Reference',
+              steps: ['سخّن الماء إلى حوالي 90-96°C', 'حضّر شوت إسبريسو (30 مل)', 'اسكب 90 مل من الماء الساخن في كوب', 'أضف الإسبريسو فوق الماء (وليس العكس) للحفاظ على الكريما'] },
+            { id: 'long-black', name: 'لونج بلاك', origin: 'أستراليا / نيوزيلندا', img: 'assets/drinks/long_black.jpg', detail: '2oz إسبريسو فوق 3oz ماء ساخن', source: 'Reference',
+              steps: ['اسكب 90 مل من الماء الساخن في الكوب أولاً', 'حضّر شوت إسبريسو مزدوج (60 مل)', 'اسكب الإسبريسو فوق الماء الساخن مباشرة', 'هذا الترتيب (الماء أولاً) يحافظ على طبقة الكريما أعلى الكوب'] },
+            { id: 'cafe-latte', name: 'كافيه لاتيه', origin: 'إيطاليا', img: 'assets/drinks/cafe_latte.jpg', detail: '1oz إسبريسو + 8-10oz حليب + رغوة خفيفة', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو (30 مل)', 'بخّر كمية كبيرة من الحليب برغوة خفيفة جداً', 'أضف 240-300 مل من الحليب المبخر فوق الإسبريسو', 'أنهِ بطبقة رقيقة من الرغوة على السطح (اختياري: ارسم Latte Art)'] },
+            { id: 'cappuccino', name: 'كابتشينو', origin: 'إيطاليا', img: 'assets/drinks/cappuccino.jpg', detail: '1-2oz إسبريسو + 2oz حليب + 2oz رغوة', source: 'Reference',
+              steps: ['حضّر شوت إسبريسو (30-60 مل)', 'بخّر الحليب برغوة كثيفة (حجم الرغوة يتضاعف تقريباً)', 'أضف 60 مل من الحليب المبخر', 'أضف 60 مل من الرغوة فوقه — الأثلاث المتساوية هي سر الكابتشينو الكلاسيكي'] }
         ];
 
         function renderDrinks() {
             const container = document.getElementById('drinkGrid');
             if (!container) return;
             container.innerHTML = DRINKS.map(d => `
-                <div class="coffee-card scroll-reveal" role="listitem" style="overflow: hidden; text-align: center;">
+                <div class="coffee-card scroll-reveal" role="listitem" onclick="openDrinkDetail('${d.id}')" style="overflow: hidden; text-align: center; cursor: pointer;">
                     <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden; background: rgba(23,18,15,0.04);">
                         <img src="${d.img}" alt="${d.name}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;">
                     </div>
@@ -5254,6 +5713,36 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        function openDrinkDetail(id) {
+            const drink = DRINKS.find(d => d.id === id);
+            if (!drink) return;
+            const modal = document.createElement('div');
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            modal.setAttribute('aria-label', drink.name);
+            modal.style.cssText = `position: fixed; inset: 0; z-index: 10000; background: rgba(23,18,15,0.95); display: flex; align-items: center; justify-content: center; padding: var(--space-xl); animation: fadeIn 400ms ease;`;
+            modal.innerHTML = `
+                <div style="background: var(--beige); max-width: 600px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-2xl); max-height: 90vh; overflow-y: auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--space-lg); gap: var(--space-md);">
+                        <div style="display:flex; gap: var(--space-md); align-items:center;">
+                            <img src="${drink.img}" alt="${drink.name}" style="width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); flex-shrink:0;">
+                            <div>
+                                <h2 style="font-size: 22px;">${drink.name}</h2>
+                                <div style="color: var(--coffee-brown); font-size: 13px;">${drink.origin}</div>
+                            </div>
+                        </div>
+                        <button class="drink-detail-close" style="background: rgba(255,255,255,0.85); border: none; font-size: 24px; line-height: 1; cursor: pointer; color: var(--coffee-brown); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">&times;</button>
+                    </div>
+                    <div style="padding: var(--space-sm) var(--space-md); background: rgba(23,18,15,0.04); border-radius: var(--radius-sm); font-weight: 700; margin-bottom: var(--space-lg); font-size: 14px;">${drink.detail}</div>
+                    <div style="font-size: 14px; font-weight: 700; margin-bottom: var(--space-sm);">طريقة التحضير</div>
+                    <ol style="list-style: none; padding: 0;">${drink.steps.map((step, i) => `<li style="padding: var(--space-sm) 0; border-bottom: 1px solid rgba(23,18,15,0.04); display: flex; align-items: start; gap: var(--space-sm);"><span style="background: var(--coffee-brown); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;">${i + 1}</span><span>${step}</span></li>`).join('')}</ol>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
+            modal.querySelector('.drink-detail-close').addEventListener('click', () => modal.remove());
         }
 
         // ============================================================
@@ -5441,7 +5930,7 @@
                             <h2 style="font-size: 24px;">${method.name}</h2>
                             <div style="color: var(--coffee-brown);">${method.nameEn}</div>
                         </div>
-                        <button class="brew-detail-close" style="background: none; border: none; font-size: 28px; cursor: pointer; color: var(--coffee-brown);">&times;</button>
+                        <button class="brew-detail-close" style="background: rgba(255,255,255,0.85); border: none; font-size: 24px; line-height: 1; cursor: pointer; color: var(--coffee-brown); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">&times;</button>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-lg);">
                         <div style="padding: var(--space-sm); background: rgba(23,18,15,0.04); border-radius: var(--radius-sm);"><div style="font-size: 11px; color: var(--coffee-brown);">الجرعة</div><div style="font-weight: 700;">${method.dose}</div></div>
