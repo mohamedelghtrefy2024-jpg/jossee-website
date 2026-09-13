@@ -1985,7 +1985,7 @@
 
         if (doseInput) doseInput.addEventListener('input', updateEspressoCalc);
         if (ratioSelect) ratioSelect.addEventListener('change', updateEspressoCalc);
-        updateEspressoCalc();
+        if (doseInput && ratioSelect && resultDose && resultYield && resultRatio) updateEspressoCalc();
 
         // ============================================================
         // 41-42. BREW CALCULATOR
@@ -2008,7 +2008,7 @@
 
         if (brewDose) brewDose.addEventListener('input', updateBrewCalc);
         if (brewRatioSelect) brewRatioSelect.addEventListener('change', updateBrewCalc);
-        updateBrewCalc();
+        if (brewDose && brewRatioSelect && brewResultDose && brewResultWater && brewResultRatio) updateBrewCalc();
 
         // ============================================================
         // 47. TROUBLESHOOTER
