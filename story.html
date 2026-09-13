@@ -6,8 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOSSEE COFFEE — قهوة مختصة</title>
-    <meta name="description" content="Jossee Coffee - Premium specialty coffee roastery. قهوة مختصة عالية الجودة">
+    <title>قصتنا — JOSSEE COFFEE</title>
+    <meta name="description" content="قصة خوسيه وفلسفتنا في اختيار وتحميص القهوة">
     <meta name="theme-color" content="#1F5C50">
     <!-- iOS "Add to Home Screen" support — Safari ignores the web manifest for
          standalone/status-bar behavior, so these are required separately. -->
@@ -98,8 +98,8 @@
             🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
         </button>
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html" class="active">الرئيسية</a></li>
-            <li><a href="story.html">قصتنا</a></li>
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="story.html" class="active">قصتنا</a></li>
             <li><a href="coffee.html">القهوة</a></li>
             <li><a href="brewing.html">التحضير</a></li>
             <li><a href="education.html">موسوعة القهوة</a></li>
@@ -115,51 +115,27 @@
         </ul>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="hero-background">
-            <img src="assets/jossee-hero-cup.jpg" alt="قهوة تركية بكوب Jossee الأصلي" loading="eager" fetchpriority="high">
-        </div>
-        <div class="hero-content">
-            <div class="hero-eyebrow">✦ Premium Coffee Roastery</div>
-            <h1 class="hero-title">
-                JOSSEE
-                <span class="latin-text">COFFEE, CRAFTED WITH CHARACTER</span>
-            </h1>
-            <p class="hero-subtitle">
-                من الحبة... إلى الفنجان.<br>
-                قهوة مختصة بنكهة فريدة وروح أصيلة.
-            </p>
-            <div class="hero-cta-group">
-                <a href="coffee.html" class="btn btn-primary">استكشف القهوة</a>
-                <a href="lab.html" class="btn btn-secondary">مختبر القهوة</a>
+    <section id="story" style="background: var(--beige);">
+        <div class="container grid-2" style="align-items: center;">
+            <div class="coffee-image scroll-reveal" style="height: 450px;">
+                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
             </div>
-        </div>
-    </section>
-
-    <!-- PROMO BANNER (admin-editable — see admin.html) -->
-    <section style="background: var(--beige); padding-top: var(--space-xl);">
-        <div class="container">
-            <div id="promoBannerSlot"></div>
-        </div>
-    </section>
-
-    <section style="background: var(--cream); padding-top: var(--space-lg); padding-bottom: var(--space-lg);">
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="trust-badge-number" id="badgeVarieties">0</div>
-                <div class="trust-badge-label">صنف قهوة</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number">100%</div>
-                <div class="trust-badge-label">حبوب أرابيكا</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number" id="badgeRating">—</div>
-                <div class="trust-badge-label">متوسط تقييم العملاء</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number">🚚</div>
-                <div class="trust-badge-label">توصيل لكل الجمهورية</div>
+            <div class="scroll-reveal">
+                <span class="section-label" style="text-align: right;">OUR STORY</span>
+                <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin: var(--space-md) 0;">
+                    قصة خوسيه<br>
+                    <span style="color: var(--coffee-brown);">شغف القهوة</span>
+                </h2>
+                <p style="color: var(--coffee-brown); line-height: 1.8; margin-bottom: var(--space-md);">
+                    بدأت رحلة خوسيه بشغف بسيط: تقديم فنجان قهوة لا يشبه غيره. اخترنا اسم "خوسيه" ليحمل معه
+                    روح المغامرة والاكتشاف، ومن يومها ونحن نبحث عن أفضل حبوب الأرابيكا حول العالم — من مرتفعات
+                    إثيوبيا وكينيا، إلى وديان أمريكا الجنوبية، وسهول اليمن — لنقدّم لعملائنا تجربة قهوة حقيقية،
+                    بعيدة عن الاستسهال والتسويق الفارغ.
+                </p>
+                <p style="color: var(--coffee-brown); line-height: 1.8;">
+                    نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
+                    حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
+                </p>
             </div>
         </div>
     </section>
@@ -187,27 +163,6 @@
                 بداية جديدة لكم في عالم القهوة، وعدم الحكم من خلفيات وأذواق منتجات أخرى. ولكم منّا فائق
                 الاحترام والتقدير.
             </p>
-        </div>
-    </section>
-
-    <section style="background: var(--beige); text-align: center;">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <span class="section-label">ابق على تواصل</span>
-            <h2 class="section-title" style="font-size: clamp(1.4rem, 2.4vw, 2rem);">اشترك في نشرتنا البريدية</h2>
-            <p class="section-subtitle" style="margin-bottom: var(--space-lg);">أحدث العروض وأخبار القهوة الجديدة، مباشرة إلى بريدك</p>
-            <form class="newsletter-form" id="newsletterForm">
-                <input type="email" id="newsletterEmail" placeholder="بريدك الإلكتروني" required>
-                <button type="submit" class="btn btn-primary">اشترك الآن</button>
-            </form>
-            <div class="form-message" id="newsletterMessage"></div>
-        </div>
-    </section>
-
-    <section style="background: var(--coffee-brown); color: var(--beige); text-align: center;">
-        <div style="max-width: 700px; margin: 0 auto;">
-            <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin-bottom: var(--space-md);">جاهز لاستكشاف عالم القهوة؟</h2>
-            <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); opacity: 0.9;">انضم إلينا واكتشف تجربة قهوة فريدة</p>
-            <a href="coffee.html" class="btn btn-primary" style="background: var(--beige); color: var(--espresso-black);">استكشف التشكيلة</a>
         </div>
     </section>
 

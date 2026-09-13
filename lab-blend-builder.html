@@ -6,8 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JOSSEE COFFEE — قهوة مختصة</title>
-    <meta name="description" content="Jossee Coffee - Premium specialty coffee roastery. قهوة مختصة عالية الجودة">
+    <title>اصنع مزيجك — مختبر القهوة</title>
+    <meta name="description" content="امزج أنواع البن المفضلة لديك واصنع Blend فريد">
     <meta name="theme-color" content="#1F5C50">
     <!-- iOS "Add to Home Screen" support — Safari ignores the web manifest for
          standalone/status-bar behavior, so these are required separately. -->
@@ -98,7 +98,7 @@
             🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
         </button>
         <ul class="nav-links" id="navLinks">
-            <li><a href="index.html" class="active">الرئيسية</a></li>
+            <li><a href="index.html">الرئيسية</a></li>
             <li><a href="story.html">قصتنا</a></li>
             <li><a href="coffee.html">القهوة</a></li>
             <li><a href="brewing.html">التحضير</a></li>
@@ -115,99 +115,105 @@
         </ul>
     </nav>
 
-    <section class="hero" id="home">
-        <div class="hero-background">
-            <img src="assets/jossee-hero-cup.jpg" alt="قهوة تركية بكوب Jossee الأصلي" loading="eager" fetchpriority="high">
-        </div>
-        <div class="hero-content">
-            <div class="hero-eyebrow">✦ Premium Coffee Roastery</div>
-            <h1 class="hero-title">
-                JOSSEE
-                <span class="latin-text">COFFEE, CRAFTED WITH CHARACTER</span>
-            </h1>
-            <p class="hero-subtitle">
-                من الحبة... إلى الفنجان.<br>
-                قهوة مختصة بنكهة فريدة وروح أصيلة.
-            </p>
-            <div class="hero-cta-group">
-                <a href="coffee.html" class="btn btn-primary">استكشف القهوة</a>
-                <a href="lab.html" class="btn btn-secondary">مختبر القهوة</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROMO BANNER (admin-editable — see admin.html) -->
-    <section style="background: var(--beige); padding-top: var(--space-xl);">
+    <section id="blend-builder" style="background: var(--espresso-black); color: var(--beige);">
         <div class="container">
-            <div id="promoBannerSlot"></div>
-        </div>
-    </section>
-
-    <section style="background: var(--cream); padding-top: var(--space-lg); padding-bottom: var(--space-lg);">
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="trust-badge-number" id="badgeVarieties">0</div>
-                <div class="trust-badge-label">صنف قهوة</div>
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 2px; font-size: 14px;">BLEND BUILDER</span>
+                <h2 class="section-title" style="color: var(--beige);">اصنع مزيجك الخاص</h2>
+                <p style="color: var(--sand); max-width: 600px; margin: var(--space-sm) auto 0;">امزج أنواع البن المفضلة لديك واصنع Blend فريد بنكهاتك المفضلة</p>
             </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number">100%</div>
-                <div class="trust-badge-label">حبوب أرابيكا</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number" id="badgeRating">—</div>
-                <div class="trust-badge-label">متوسط تقييم العملاء</div>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-badge-number">🚚</div>
-                <div class="trust-badge-label">توصيل لكل الجمهورية</div>
-            </div>
-        </div>
-    </section>
 
-    <section style="background: var(--beige);">
-        <div class="container scroll-reveal" style="text-align: center; max-width: 800px; margin: 0 auto;">
-            <span class="section-label">ABOUT JOSSEE</span>
-            <h2 class="section-title">
-                قهوة بجودة<br>
-                <span style="color: var(--coffee-brown); font-weight: 400; font-family: var(--font-latin);">Specialty Coffee</span>
-            </h2>
-            <p style="color: var(--coffee-brown); font-size: 1.05rem; line-height: 2; text-align: right;">
-                نحن في Jossee coffee نتبع كل خطوات العناية الفائقة بحبوب قهوتنا الأرابيكا 100%.
-                بداية من التعامل مع المزارع وظروف زراعة الحبوب من معدل الارتفاع فوق سطح البحر، والمناخ،
-                وما يزرع حول حبوب القهوة من منتجات أخرى، وما هو متوقع من إيحاء هذه الحبوب أثناء التذوق
-                وبعد التذوق، جرعة الكافيين، المرارة، الحمضية — وهذا ما يُسمى العناية الفائقة بحبوب القهوة.
-            </p>
-            <p style="color: var(--coffee-brown); font-size: 1.05rem; line-height: 2; text-align: right; margin-top: 16px;">
-                ورغم ذلك هناك احتمالية بسيطة بعدم الاتفاق مع ذوق العميل، وذلك نظراً لتعوّد العميل لسنين
-                طويلة على منتجات أخرى، وهذا لا يعني أنه يوجد أي عيب في منتجنا فائق الجودة، أو يوجد تقليل
-                من ذوق العميل تماماً، لكنه مجرد عدم توافق في الذوق، لأن القهوة ذوق شخصي جداً.
-            </p>
-            <p style="color: var(--coffee-brown); font-size: 1.05rem; line-height: 2; text-align: right; margin-top: 16px;">
-                كل ما نطلبه من سيادتكم هو إعطاء الفرصة والوقت لمنتجنا فائق الجودة في الحكم عليه، وكأنها
-                بداية جديدة لكم في عالم القهوة، وعدم الحكم من خلفيات وأذواق منتجات أخرى. ولكم منّا فائق
-                الاحترام والتقدير.
-            </p>
-        </div>
-    </section>
+            <div class="grid-2" style="gap: var(--space-2xl);">
+                <!-- Left: Blend Controls -->
+                <div>
+                    <div style="background: rgba(255,255,255,0.04); padding: var(--space-xl); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);">
+                        <h3 style="font-size: 18px; margin-bottom: var(--space-lg);">اختر حبوبك</h3>
+                        
+                        <div id="blendBeans">
+                            <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                                    <select class="blend-bean-select bean-select" data-bean="1" style="flex: 1; margin-right: var(--space-md);">
+                                        <option value="">اختر نوع البن</option>
+                                    </select>
+                                    <button class="blend-remove remove-bean" data-bean="1" style="display: none;">✕</button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                    <input type="range" class="blend-slider bean-slider" data-bean="1" min="0" max="100" value="50">
+                                    <span class="blend-percentage bean-percentage" data-bean="1">50%</span>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                                    <select class="blend-bean-select bean-select" data-bean="2" style="flex: 1; margin-right: var(--space-md);">
+                                        <option value="">اختر نوع البن</option>
+                                    </select>
+                                    <button class="blend-remove remove-bean" data-bean="2">✕</button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                    <input type="range" class="blend-slider bean-slider" data-bean="2" min="0" max="100" value="30">
+                                    <span class="blend-percentage bean-percentage" data-bean="2">30%</span>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                                    <select class="blend-bean-select bean-select" data-bean="3" style="flex: 1; margin-right: var(--space-md);">
+                                        <option value="">اختر نوع البن</option>
+                                    </select>
+                                    <button class="blend-remove remove-bean" data-bean="3">✕</button>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: var(--space-md);">
+                                    <input type="range" class="blend-slider bean-slider" data-bean="3" min="0" max="100" value="20">
+                                    <span class="blend-percentage bean-percentage" data-bean="3">20%</span>
+                                </div>
+                            </div>
+                        </div>
 
-    <section style="background: var(--beige); text-align: center;">
-        <div style="max-width: 600px; margin: 0 auto;">
-            <span class="section-label">ابق على تواصل</span>
-            <h2 class="section-title" style="font-size: clamp(1.4rem, 2.4vw, 2rem);">اشترك في نشرتنا البريدية</h2>
-            <p class="section-subtitle" style="margin-bottom: var(--space-lg);">أحدث العروض وأخبار القهوة الجديدة، مباشرة إلى بريدك</p>
-            <form class="newsletter-form" id="newsletterForm">
-                <input type="email" id="newsletterEmail" placeholder="بريدك الإلكتروني" required>
-                <button type="submit" class="btn btn-primary">اشترك الآن</button>
-            </form>
-            <div class="form-message" id="newsletterMessage"></div>
-        </div>
-    </section>
+                        <button id="addBean" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px dashed rgba(255,255,255,0.15); border-radius: var(--radius-sm); color: var(--sand); cursor: pointer; font-size: 14px; transition: all var(--transition-fast);">
+                            + أضف نوع بن آخر
+                        </button>
 
-    <section style="background: var(--coffee-brown); color: var(--beige); text-align: center;">
-        <div style="max-width: 700px; margin: 0 auto;">
-            <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin-bottom: var(--space-md);">جاهز لاستكشاف عالم القهوة؟</h2>
-            <p style="font-size: 1.1rem; margin-bottom: var(--space-xl); opacity: 0.9;">انضم إلينا واكتشف تجربة قهوة فريدة</p>
-            <a href="coffee.html" class="btn btn-primary" style="background: var(--beige); color: var(--espresso-black);">استكشف التشكيلة</a>
+                        <div style="margin-top: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); text-align: center;">
+                            <span style="font-size: 14px; color: var(--sand);">المجموع:</span>
+                            <span id="totalPercentage" style="font-size: 24px; font-weight: 900; color: var(--gold-light);">100%</span>
+                            <div id="totalWarning" style="display: none; color: #FF6B6B; font-size: 13px; margin-top: var(--space-xs);">⚠️ يجب أن يكون المجموع 100%</div>
+                        </div>
+
+                        <div style="margin-top: var(--space-lg);">
+                            <label style="display: block; font-size: 14px; color: var(--sand); margin-bottom: var(--space-sm);">حجم الدفعة (جرام)</label>
+                            <input type="number" id="batchSize" value="1000" min="100" max="5000" step="100" aria-label="حجم الدفعة بالجرام" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.06); color: var(--beige); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); font-size: 16px;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Blend Results -->
+                <div>
+                    <div style="background: rgba(255,255,255,0.04); padding: var(--space-xl); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.06);">
+                        <h3 style="font-size: 18px; margin-bottom: var(--space-lg);">مزيجك</h3>
+                        
+                        <div id="blendResult" role="region" aria-live="polite" aria-label="نتيجة المزيج" style="min-height: 200px;">
+                            <div style="text-align: center; padding: var(--space-xl); color: var(--sand);">
+                                <div style="font-size: 48px; margin-bottom: var(--space-md);">⚗️</div>
+                                <p>اختر أنواع البن وعدّل النسب لإنشاء مزيجك</p>
+                            </div>
+                        </div>
+
+                        <div id="blendProfile" style="display: none; margin-top: var(--space-lg);">
+                            <div style="font-size: 14px; color: var(--sand); margin-bottom: var(--space-md);">الملف التقديري</div>
+                            <div id="profileBars" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);"></div>
+                        </div>
+
+                        <!-- Save Blend -->
+                        <div style="margin-top: var(--space-lg);">
+                            <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
+                                <input type="text" id="blendName" placeholder="اسم المزيج" style="flex: 1; min-width: 150px; padding: 10px; background: rgba(255,255,255,0.06); color: var(--beige); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); font-size: 14px;">
+                                <button id="saveBlendBtn" class="btn btn-primary" style="padding: 10px 24px;">💾 حفظ</button>
+                                <button id="loadBlendsBtn" class="btn btn-secondary" style="padding: 10px 24px;">📂 محفوظات</button>
+                            </div>
+                            <div id="savedBlendsList" style="margin-top: var(--space-md); display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
