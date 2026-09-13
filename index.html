@@ -407,6 +407,35 @@
         .nav-links a:hover {
             color: var(--gold-light);
         }
+
+        .nav-links a.active-tab {
+            color: var(--gold-light);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .nav-links a.active-tab::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            left: 0;
+            bottom: -6px;
+            height: 2px;
+            background: var(--gold-light);
+        }
+
+        /* ============================================================
+           TAB PANELS — only the active panel is shown; switching tabs
+           replaces the long single-page scroll with focused sections.
+           ============================================================ */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: fadeIn 300ms ease;
+        }
         
         .nav-links .lang-toggle {
             background: none;
@@ -1471,14 +1500,11 @@
             🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
         </button>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#story">قصتنا</a></li>
-            <li><a href="#coffee">القهوة</a></li>
-            <li><a href="#brewing">التحضير</a></li>
-            <li><a href="#education">موسوعة القهوة</a></li>
-            <li><a href="#drinks">المشروبات</a></li>
-            <li><a href="#equipment">المعدات</a></li>
-            <li><a href="#lab">مختبر القهوة</a></li>
+            <li><a href="#tab-home" data-tab="home" class="tab-nav-link active-tab">الرئيسية</a></li>
+            <li><a href="#tab-products" data-tab="products" class="tab-nav-link">منتجاتنا</a></li>
+            <li><a href="#tab-about" data-tab="about" class="tab-nav-link">عالم القهوة</a></li>
+            <li><a href="#tab-flavors" data-tab="flavors" class="tab-nav-link">النكهات ومزيجك</a></li>
+            <li><a href="#tab-brewing" data-tab="brewing" class="tab-nav-link">طرق التحضير</a></li>
             <li>
                 <button class="lang-toggle" onclick="toggleLanguage()" aria-label="Toggle language">
                     EN
@@ -1488,40 +1514,10 @@
     </nav>
 
     <!-- ============================================================
-       HERO SECTION
+       TAB PANELS — each corresponds to one main-nav tab.
+       Only one panel is visible at a time (see .tab-panel CSS / JS).
        ============================================================ -->
-    <!-- ============================================================
-       OUR STORY — moved to lead the page, right after the hero,
-       as the brand's introduction (matches nav order: Home → Story → ...)
-       ============================================================ -->
-    <section id="story" style="background: var(--beige);">
-        <div class="container grid-2" style="align-items: center;">
-            <div class="coffee-image scroll-reveal" style="height: 450px;">
-                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
-            </div>
-            <div class="scroll-reveal">
-                <span class="section-label" style="text-align: right;">OUR STORY</span>
-                <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin: var(--space-md) 0;">
-                    قصة خوسيه<br>
-                    <span style="color: var(--coffee-brown);">شغف القهوة</span>
-                </h2>
-                <p style="color: var(--coffee-brown); line-height: 1.8; margin-bottom: var(--space-md);">
-                    بدأت رحلة خوسيه بشغف بسيط: تقديم فنجان قهوة لا يشبه غيره. اخترنا اسم "خوسيه" ليحمل معه
-                    روح المغامرة والاكتشاف، ومن يومها ونحن نبحث عن أفضل حبوب الأرابيكا حول العالم — من مرتفعات
-                    إثيوبيا وكينيا، إلى وديان أمريكا الجنوبية، وسهول اليمن — لنقدّم لعملائنا تجربة قهوة حقيقية،
-                    بعيدة عن الاستسهال والتسويق الفارغ.
-                </p>
-                <p style="color: var(--coffee-brown); line-height: 1.8;">
-                    نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
-                    حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       HERO SECTION
-       ============================================================ -->
+    <div class="tab-panel active" id="tab-home" data-tab-panel="home" role="tabpanel" aria-label="الرئيسية">
     <section class="hero" id="home">
         <div class="hero-background">
             <img src="assets/jossee-hero-cup.jpg" alt="قهوة تركية بكوب Jossee الأصلي" loading="eager" fetchpriority="high">
@@ -1543,9 +1539,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       TRUST / INFO BADGES
-       ============================================================ -->
     <section style="background: var(--cream); padding-top: var(--space-lg); padding-bottom: var(--space-lg);">
         <div class="trust-badges">
             <div class="trust-badge">
@@ -1567,9 +1560,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       BRAND INTRODUCTION
-       ============================================================ -->
     <section style="background: var(--beige);">
         <div class="container scroll-reveal" style="text-align: center; max-width: 800px; margin: 0 auto;">
             <span class="section-label">ABOUT JOSSEE</span>
@@ -1596,9 +1586,70 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       COFFEE CATALOG
-       ============================================================ -->
+    <section id="lab" style="background: var(--espresso-black); color: var(--beige);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 2px; font-size: 14px;">COFFEE LAB</span>
+                <h2 class="section-title" style="color: var(--beige);">مختبر القهوة</h2>
+                <p style="color: var(--sand); max-width: 600px; margin: var(--space-sm) auto 0;">استكشف. امزج. حضّر. افهم.</p>
+            </div>
+
+            <div class="grid-3" id="labGrid">
+                <div class="lab-card">
+                    <div class="lab-icon">🔍</div>
+                    <h3 class="lab-title">ابحث عن قهوتك</h3>
+                    <p class="lab-desc">أجب عن أسئلة بسيطة وابحث عن البن المثالي لذوقك</p>
+                    <a href="#find-coffee" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">ابدأ الآن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">⚗️</div>
+                    <h3 class="lab-title">اصنع مزيجك</h3>
+                    <p class="lab-desc">امزج أنواع البن المفضلة لديك واصنع Blend فريد</p>
+                    <a href="#blend-builder" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">اصنع Blend</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📐</div>
+                    <h3 class="lab-title">حاسبة الإسبريسو</h3>
+                    <p class="lab-desc">احسب الجرعة والنسبة المثالية لإسبريسو رائع</p>
+                    <a href="#espresso-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب الآن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">☕</div>
+                    <h3 class="lab-title">حاسبة التحضير</h3>
+                    <p class="lab-desc">احسب نسبة القهوة إلى الماء لطريقة التحضير المفضلة</p>
+                    <a href="#brew-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">🔧</div>
+                    <h3 class="lab-title">دليل الطحن</h3>
+                    <p class="lab-desc">تعرف على درجة الطحن المناسبة لكل طريقة تحضير</p>
+                    <a href="#grind-guide" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">استكشف</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">🛠️</div>
+                    <h3 class="lab-title">مشكلة في الاستخلاص؟</h3>
+                    <p class="lab-desc">شخص وحل مشاكل استخلاص القهوة</p>
+                    <a href="#troubleshooter" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">شخص</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📊</div>
+                    <h3 class="lab-title">قارن القهوة</h3>
+                    <p class="lab-desc">قارن بين أنواع القهوة المختلفة جنباً إلى جنب</p>
+                    <a href="#coffee-comparison" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">قارن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📝</div>
+                    <h3 class="lab-title">سجل التحضير</h3>
+                    <p class="lab-desc">سجل تجاربك وتتبع تقدمك في تحضير القهوة</p>
+                    <a href="#brew-log" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">سجل</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div>
+
+    <div class="tab-panel" id="tab-products" data-tab-panel="products" role="tabpanel" aria-label="منتجاتنا">
     <section id="coffee" style="background: var(--cream);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -1622,9 +1673,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       COFFEE PHILOSOPHY
-       ============================================================ -->
     <section style="background: var(--beige);">
         <div class="container grid-2" style="align-items: center;">
             <div class="scroll-reveal">
@@ -1648,9 +1696,143 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       FLAVOR EXPLORER
-       ============================================================ -->
+    <section id="find-coffee" style="background: var(--cream);">
+        <div class="container" style="max-width: 900px;">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">FIND YOUR COFFEE</span>
+                <h2 class="section-title">ابحث عن قهوتك المثالية</h2>
+                <p class="section-subtitle">أجب عن الأسئلة لنجد لك البن الأنسب لذوقك</p>
+            </div>
+
+            <div style="background: var(--beige); padding: var(--space-2xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
+                <div style="margin-bottom: var(--space-xl);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                        <label style="font-weight: 700; font-size: 16px;">القوام (Body)</label>
+                        <span style="font-size: 14px; color: var(--coffee-brown);">خفيف ← ثقيل</span>
+                    </div>
+                    <input type="range" id="prefBody" min="1" max="10" value="5" class="blend-slider" aria-label="القوام المفضل من 1 إلى 10" style="width: 100%; height: 6px;">
+                </div>
+
+                <div style="margin-bottom: var(--space-xl);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                        <label style="font-weight: 700; font-size: 16px;">الحمضية (Acidity)</label>
+                        <span style="font-size: 14px; color: var(--coffee-brown);">منخفضة ← مرتفعة</span>
+                    </div>
+                    <input type="range" id="prefAcidity" min="1" max="10" value="5" class="blend-slider" aria-label="الحمضية المفضلة من 1 إلى 10" style="width: 100%; height: 6px;">
+                </div>
+
+                <div style="margin-bottom: var(--space-xl);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                        <label style="font-weight: 700; font-size: 16px;">الحلاوة (Sweetness)</label>
+                        <span style="font-size: 14px; color: var(--coffee-brown);">منخفضة ← مرتفعة</span>
+                    </div>
+                    <input type="range" id="prefSweetness" min="1" max="10" value="6" class="blend-slider" aria-label="الحلاوة المفضلة من 1 إلى 10" style="width: 100%; height: 6px;">
+                </div>
+
+                <div style="margin-bottom: var(--space-xl);">
+                    <label style="display: block; font-weight: 700; font-size: 16px; margin-bottom: var(--space-sm);">النكهة المفضلة</label>
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
+                        <button class="flavor-pref-btn" data-flavor="chocolate" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍫 شوكولاتة</button>
+                        <button class="flavor-pref-btn" data-flavor="caramel" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍯 كراميل</button>
+                        <button class="flavor-pref-btn" data-flavor="fruitiness" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍓 فواكه</button>
+                        <button class="flavor-pref-btn" data-flavor="floral" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🌸 زهور</button>
+                        <button class="flavor-pref-btn" data-flavor="nutty" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🥜 جوزي</button>
+                        <button class="flavor-pref-btn" data-flavor="spice" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🌶️ حار</button>
+                    </div>
+                    <div id="selectedFlavors" style="margin-top: var(--space-sm); font-size: 14px; color: var(--coffee-brown);"></div>
+                </div>
+
+                <button id="findCoffeeBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-size: 18px;">
+                    ابحث عن قهوتي
+                </button>
+
+                <div id="finderResults" role="region" aria-live="polite" aria-label="نتائج البحث عن قهوتك" style="display: none; margin-top: var(--space-xl);">
+                    <h4 style="font-size: 16px; margin-bottom: var(--space-md);">النتائج المطابقة</h4>
+                    <div id="finderResultsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="coffee-comparison" style="background: var(--beige);">
+        <div class="container" style="max-width: 900px;">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">COMPARE</span>
+                <h2 class="section-title">قارن بين أنواع القهوة</h2>
+                <p class="section-subtitle">اختر حتى 3 أنواع لمقارنتها جنباً إلى جنب</p>
+            </div>
+
+            <div style="background: var(--cream); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
+                <div class="grid-3" style="gap: var(--space-md); margin-bottom: var(--space-xl);">
+                    <select id="compare1" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
+                        <option value="">اختر النوع الأول</option>
+                    </select>
+                    <select id="compare2" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
+                        <option value="">اختر النوع الثاني</option>
+                    </select>
+                    <select id="compare3" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
+                        <option value="">اختر النوع الثالث (اختياري)</option>
+                    </select>
+                </div>
+
+                <button id="compareBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">قارن الآن</button>
+
+                <div id="comparisonResults" role="region" aria-live="polite" aria-label="نتائج المقارنة" style="display: none; margin-top: var(--space-xl); overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr id="compareHeaders" style="background: var(--espresso-black); color: var(--beige);">
+                                <th style="padding: var(--space-md); text-align: right;">الخاصية</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compareBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    </div>
+
+    <div class="tab-panel" id="tab-about" data-tab-panel="about" role="tabpanel" aria-label="عالم القهوة">
+    <section id="story" style="background: var(--beige);">
+        <div class="container grid-2" style="align-items: center;">
+            <div class="coffee-image scroll-reveal" style="height: 450px;">
+                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
+            </div>
+            <div class="scroll-reveal">
+                <span class="section-label" style="text-align: right;">OUR STORY</span>
+                <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin: var(--space-md) 0;">
+                    قصة خوسيه<br>
+                    <span style="color: var(--coffee-brown);">شغف القهوة</span>
+                </h2>
+                <p style="color: var(--coffee-brown); line-height: 1.8; margin-bottom: var(--space-md);">
+                    بدأت رحلة خوسيه بشغف بسيط: تقديم فنجان قهوة لا يشبه غيره. اخترنا اسم "خوسيه" ليحمل معه
+                    روح المغامرة والاكتشاف، ومن يومها ونحن نبحث عن أفضل حبوب الأرابيكا حول العالم — من مرتفعات
+                    إثيوبيا وكينيا، إلى وديان أمريكا الجنوبية، وسهول اليمن — لنقدّم لعملائنا تجربة قهوة حقيقية،
+                    بعيدة عن الاستسهال والتسويق الفارغ.
+                </p>
+                <p style="color: var(--coffee-brown); line-height: 1.8;">
+                    نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
+                    حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" style="background: var(--beige);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">COFFEE EDUCATION</span>
+                <h2 class="section-title">موسوعة القهوة</h2>
+                <p class="section-subtitle">تعرف على أساسيات القهوة في دقيقة</p>
+            </div>
+            <div id="educationList" style="max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-sm);" role="list"></div>
+        </div>
+    </section>
+
+    </div>
+
+    <div class="tab-panel" id="tab-flavors" data-tab-panel="flavors" role="tabpanel" aria-label="النكهات ومزيجك">
     <section id="flavors" style="background: var(--cream);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -1686,9 +1868,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       FLAVOR WHEEL
-       ============================================================ -->
     <section id="flavor-wheel" style="background: var(--beige);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -1793,230 +1972,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       BREWING METHODS
-       ============================================================ -->
-    <section id="brewing" style="background: var(--cream);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">BREWING</span>
-                <h2 class="section-title">طرق التحضير</h2>
-                <p class="section-subtitle">اكتشف أفضل طرق تحضير القهوة</p>
-            </div>
-            <div class="grid-3" id="brewGrid"></div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       COFFEE EDUCATION (بند 137-138 من البرومبت)
-       ============================================================ -->
-    <section id="education" style="background: var(--beige);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">COFFEE EDUCATION</span>
-                <h2 class="section-title">موسوعة القهوة</h2>
-                <p class="section-subtitle">تعرف على أساسيات القهوة في دقيقة</p>
-            </div>
-            <div id="educationList" style="max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-sm);" role="list"></div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       DRINKS ENCYCLOPEDIA
-       ============================================================ -->
-    <section id="drinks" style="background: var(--beige);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">DRINKS</span>
-                <h2 class="section-title">موسوعة المشروبات</h2>
-                <p class="section-subtitle">اكتشف تشكيلة مشروبات القهوة المتنوعة</p>
-            </div>
-            <div class="grid-4" id="drinkGrid" role="list"></div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       EQUIPMENT
-       ============================================================ -->
-    <section id="equipment" style="background: var(--cream);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">EQUIPMENT</span>
-                <h2 class="section-title">دليل المعدات</h2>
-                <p class="section-subtitle">المعدات الأساسية لتحضير القهوة المختصة</p>
-            </div>
-            <div class="grid-4" id="equipmentGrid" role="list"></div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       COFFEE LAB
-       ============================================================ -->
-    <section id="lab" style="background: var(--espresso-black); color: var(--beige);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 2px; font-size: 14px;">COFFEE LAB</span>
-                <h2 class="section-title" style="color: var(--beige);">مختبر القهوة</h2>
-                <p style="color: var(--sand); max-width: 600px; margin: var(--space-sm) auto 0;">استكشف. امزج. حضّر. افهم.</p>
-            </div>
-
-            <div class="grid-3" id="labGrid">
-                <div class="lab-card">
-                    <div class="lab-icon">🔍</div>
-                    <h3 class="lab-title">ابحث عن قهوتك</h3>
-                    <p class="lab-desc">أجب عن أسئلة بسيطة وابحث عن البن المثالي لذوقك</p>
-                    <a href="#find-coffee" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">ابدأ الآن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">⚗️</div>
-                    <h3 class="lab-title">اصنع مزيجك</h3>
-                    <p class="lab-desc">امزج أنواع البن المفضلة لديك واصنع Blend فريد</p>
-                    <a href="#blend-builder" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">اصنع Blend</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📐</div>
-                    <h3 class="lab-title">حاسبة الإسبريسو</h3>
-                    <p class="lab-desc">احسب الجرعة والنسبة المثالية لإسبريسو رائع</p>
-                    <a href="#espresso-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب الآن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">☕</div>
-                    <h3 class="lab-title">حاسبة التحضير</h3>
-                    <p class="lab-desc">احسب نسبة القهوة إلى الماء لطريقة التحضير المفضلة</p>
-                    <a href="#brew-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">🔧</div>
-                    <h3 class="lab-title">دليل الطحن</h3>
-                    <p class="lab-desc">تعرف على درجة الطحن المناسبة لكل طريقة تحضير</p>
-                    <a href="#grind-guide" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">استكشف</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">🛠️</div>
-                    <h3 class="lab-title">مشكلة في الاستخلاص؟</h3>
-                    <p class="lab-desc">شخص وحل مشاكل استخلاص القهوة</p>
-                    <a href="#troubleshooter" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">شخص</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📊</div>
-                    <h3 class="lab-title">قارن القهوة</h3>
-                    <p class="lab-desc">قارن بين أنواع القهوة المختلفة جنباً إلى جنب</p>
-                    <a href="#coffee-comparison" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">قارن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📝</div>
-                    <h3 class="lab-title">سجل التحضير</h3>
-                    <p class="lab-desc">سجل تجاربك وتتبع تقدمك في تحضير القهوة</p>
-                    <a href="#brew-log" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">سجل</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       FIND YOUR COFFEE
-       ============================================================ -->
-    <section id="find-coffee" style="background: var(--cream);">
-        <div class="container" style="max-width: 900px;">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">FIND YOUR COFFEE</span>
-                <h2 class="section-title">ابحث عن قهوتك المثالية</h2>
-                <p class="section-subtitle">أجب عن الأسئلة لنجد لك البن الأنسب لذوقك</p>
-            </div>
-
-            <div style="background: var(--beige); padding: var(--space-2xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
-                <div style="margin-bottom: var(--space-xl);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                        <label style="font-weight: 700; font-size: 16px;">القوام (Body)</label>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">خفيف ← ثقيل</span>
-                    </div>
-                    <input type="range" id="prefBody" min="1" max="10" value="5" class="blend-slider" aria-label="القوام المفضل من 1 إلى 10" style="width: 100%; height: 6px;">
-                </div>
-
-                <div style="margin-bottom: var(--space-xl);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                        <label style="font-weight: 700; font-size: 16px;">الحمضية (Acidity)</label>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">منخفضة ← مرتفعة</span>
-                    </div>
-                    <input type="range" id="prefAcidity" min="1" max="10" value="5" class="blend-slider" aria-label="الحمضية المفضلة من 1 إلى 10" style="width: 100%; height: 6px;">
-                </div>
-
-                <div style="margin-bottom: var(--space-xl);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                        <label style="font-weight: 700; font-size: 16px;">الحلاوة (Sweetness)</label>
-                        <span style="font-size: 14px; color: var(--coffee-brown);">منخفضة ← مرتفعة</span>
-                    </div>
-                    <input type="range" id="prefSweetness" min="1" max="10" value="6" class="blend-slider" aria-label="الحلاوة المفضلة من 1 إلى 10" style="width: 100%; height: 6px;">
-                </div>
-
-                <div style="margin-bottom: var(--space-xl);">
-                    <label style="display: block; font-weight: 700; font-size: 16px; margin-bottom: var(--space-sm);">النكهة المفضلة</label>
-                    <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm);">
-                        <button class="flavor-pref-btn" data-flavor="chocolate" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍫 شوكولاتة</button>
-                        <button class="flavor-pref-btn" data-flavor="caramel" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍯 كراميل</button>
-                        <button class="flavor-pref-btn" data-flavor="fruitiness" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🍓 فواكه</button>
-                        <button class="flavor-pref-btn" data-flavor="floral" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🌸 زهور</button>
-                        <button class="flavor-pref-btn" data-flavor="nutty" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🥜 جوزي</button>
-                        <button class="flavor-pref-btn" data-flavor="spice" style="padding: 8px 16px; border: 2px solid rgba(23,18,15,0.08); border-radius: var(--radius-sm); background: transparent; cursor: pointer; transition: all var(--transition-fast); font-size: 13px;">🌶️ حار</button>
-                    </div>
-                    <div id="selectedFlavors" style="margin-top: var(--space-sm); font-size: 14px; color: var(--coffee-brown);"></div>
-                </div>
-
-                <button id="findCoffeeBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 16px; font-size: 18px;">
-                    ابحث عن قهوتي
-                </button>
-
-                <div id="finderResults" role="region" aria-live="polite" aria-label="نتائج البحث عن قهوتك" style="display: none; margin-top: var(--space-xl);">
-                    <h4 style="font-size: 16px; margin-bottom: var(--space-md);">النتائج المطابقة</h4>
-                    <div id="finderResultsList" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       COFFEE COMPARISON
-       ============================================================ -->
-    <section id="coffee-comparison" style="background: var(--beige);">
-        <div class="container" style="max-width: 900px;">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">COMPARE</span>
-                <h2 class="section-title">قارن بين أنواع القهوة</h2>
-                <p class="section-subtitle">اختر حتى 3 أنواع لمقارنتها جنباً إلى جنب</p>
-            </div>
-
-            <div style="background: var(--cream); padding: var(--space-xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
-                <div class="grid-3" style="gap: var(--space-md); margin-bottom: var(--space-xl);">
-                    <select id="compare1" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
-                        <option value="">اختر النوع الأول</option>
-                    </select>
-                    <select id="compare2" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
-                        <option value="">اختر النوع الثاني</option>
-                    </select>
-                    <select id="compare3" class="blend-bean-select" style="background: white; color: var(--espresso-black); border-color: rgba(23,18,15,0.12);">
-                        <option value="">اختر النوع الثالث (اختياري)</option>
-                    </select>
-                </div>
-
-                <button id="compareBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">قارن الآن</button>
-
-                <div id="comparisonResults" role="region" aria-live="polite" aria-label="نتائج المقارنة" style="display: none; margin-top: var(--space-xl); overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                        <thead>
-                            <tr id="compareHeaders" style="background: var(--espresso-black); color: var(--beige);">
-                                <th style="padding: var(--space-md); text-align: right;">الخاصية</th>
-                            </tr>
-                        </thead>
-                        <tbody id="compareBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================================
-       BLEND BUILDER
-       ============================================================ -->
     <section id="blend-builder" style="background: var(--espresso-black); color: var(--beige);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2119,9 +2074,42 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       ESPRESSO CALCULATOR
-       ============================================================ -->
+    </div>
+
+    <div class="tab-panel" id="tab-brewing" data-tab-panel="brewing" role="tabpanel" aria-label="طرق التحضير">
+    <section id="brewing" style="background: var(--cream);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">BREWING</span>
+                <h2 class="section-title">طرق التحضير</h2>
+                <p class="section-subtitle">اكتشف أفضل طرق تحضير القهوة</p>
+            </div>
+            <div class="grid-3" id="brewGrid"></div>
+        </div>
+    </section>
+
+    <section id="drinks" style="background: var(--beige);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">DRINKS</span>
+                <h2 class="section-title">موسوعة المشروبات</h2>
+                <p class="section-subtitle">اكتشف تشكيلة مشروبات القهوة المتنوعة</p>
+            </div>
+            <div class="grid-4" id="drinkGrid" role="list"></div>
+        </div>
+    </section>
+
+    <section id="equipment" style="background: var(--cream);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span class="section-label">EQUIPMENT</span>
+                <h2 class="section-title">دليل المعدات</h2>
+                <p class="section-subtitle">المعدات الأساسية لتحضير القهوة المختصة</p>
+            </div>
+            <div class="grid-4" id="equipmentGrid" role="list"></div>
+        </div>
+    </section>
+
     <section id="espresso-calc" style="background: var(--beige);">
         <div class="container" style="max-width: 700px;">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2175,9 +2163,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       BREW CALCULATOR
-       ============================================================ -->
     <section id="brew-calc" style="background: var(--cream);">
         <div class="container" style="max-width: 700px;">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2222,9 +2207,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       GRIND GUIDE
-       ============================================================ -->
     <section id="grind-guide" style="background: var(--beige);">
         <div class="container" style="max-width: 900px;">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2273,9 +2255,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       TROUBLESHOOTER
-       ============================================================ -->
     <section id="troubleshooter" style="background: var(--cream);">
         <div class="container" style="max-width: 700px;">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2319,9 +2298,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       BREW LOG
-       ============================================================ -->
     <section id="brew-log" style="background: var(--beige);">
         <div class="container" style="max-width: 900px;">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -2401,8 +2377,10 @@
         </div>
     </section>
 
+    </div>
+
     <!-- ============================================================
-       NEWSLETTER
+       GLOBAL SECTIONS — shown under every tab
        ============================================================ -->
     <section style="background: var(--beige); text-align: center;">
         <div style="max-width: 600px; margin: 0 auto;">
@@ -2417,9 +2395,6 @@
         </div>
     </section>
 
-    <!-- ============================================================
-       CTA SECTION
-       ============================================================ -->
     <section style="background: var(--coffee-brown); color: var(--beige); text-align: center;">
         <div style="max-width: 700px; margin: 0 auto;">
             <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin-bottom: var(--space-md);">جاهز لاستكشاف عالم القهوة؟</h2>
@@ -2427,6 +2402,7 @@
             <a href="#coffee" class="btn btn-primary" style="background: var(--beige); color: var(--espresso-black);">استكشف التشكيلة</a>
         </div>
     </section>
+
 
     <!-- ============================================================
        FOOTER
@@ -6425,6 +6401,75 @@
             console.log('═══════════════════════════════════════');
             console.log('☕ JOSSEE COFFEE — Coffee Crafted with Character');
         });
+    </script>
+    <!-- ============================================================
+         TAB NAVIGATION — replaces the single long scroll with
+         click-to-switch panels (see .tab-panel CSS above).
+         ============================================================ -->
+    <script>
+        (function () {
+            // Maps every original section id to the tab panel that now contains it,
+            // so any existing link (hero buttons, lab hub, footer, etc.) still works.
+            const ID_TO_TAB = {
+                'home': 'home', 'lab': 'home',
+                'coffee': 'products', 'find-coffee': 'products', 'coffee-comparison': 'products',
+                'story': 'about', 'education': 'about',
+                'flavors': 'flavors', 'flavor-wheel': 'flavors', 'blend-builder': 'flavors',
+                'brewing': 'brewing', 'drinks': 'brewing', 'equipment': 'brewing',
+                'espresso-calc': 'brewing', 'brew-calc': 'brewing', 'grind-guide': 'brewing',
+                'troubleshooter': 'brewing', 'brew-log': 'brewing'
+            };
+
+            const panels = Array.from(document.querySelectorAll('.tab-panel'));
+            const navTabLinks = Array.from(document.querySelectorAll('.tab-nav-link'));
+            const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function activateTab(tabKey) {
+                let didSwitch = false;
+                panels.forEach(p => {
+                    const isTarget = p.dataset.tabPanel === tabKey;
+                    if (isTarget && !p.classList.contains('active')) didSwitch = true;
+                    p.classList.toggle('active', isTarget);
+                });
+                navTabLinks.forEach(a => a.classList.toggle('active-tab', a.dataset.tab === tabKey));
+                if (didSwitch && typeof handleScrollReveal === 'function') {
+                    // let the just-shown panel's reveal elements catch up
+                    setTimeout(handleScrollReveal, 50);
+                }
+                return didSwitch;
+            }
+
+            document.addEventListener('click', function (e) {
+                const link = e.target.closest('a[href^="#"]');
+                if (!link) return;
+                const id = link.getAttribute('href').slice(1);
+                if (!id) return;
+
+                const tabKey = link.dataset.tab || ID_TO_TAB[id];
+                if (tabKey) {
+                    e.preventDefault();
+                    activateTab(tabKey);
+                    requestAnimationFrame(() => {
+                        const target = document.getElementById(id);
+                        if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                    });
+                }
+                // links to ids outside the tab system (e.g. #contact / footer) keep native scroll behavior
+            });
+
+            // Deep-linking: if the page was opened with a hash matching a known section, jump to its tab.
+            if (location.hash) {
+                const id = location.hash.slice(1);
+                const tabKey = ID_TO_TAB[id] || (id.startsWith('tab-') ? id.replace('tab-', '') : null);
+                if (tabKey) {
+                    activateTab(tabKey);
+                    setTimeout(() => {
+                        const target = document.getElementById(id);
+                        if (target) target.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    }, 60);
+                }
+            }
+        })();
     </script>
 </body>
 </html>
