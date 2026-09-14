@@ -6009,7 +6009,9 @@
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(() => {
-                    // No sw.js present in this deployment — safe to ignore.
+                    // Offline caching just won't be available (e.g. served
+                    // from a host that blocks sw.js) — the site still works
+                    // fully online without it.
                 });
             }
         }
