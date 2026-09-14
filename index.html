@@ -363,6 +363,7 @@
             z-index: 1000;
             padding: var(--space-md) var(--space-xl);
             background: rgba(23, 18, 15, 0.95);
+            -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             display: flex;
             justify-content: space-between;
@@ -789,6 +790,7 @@
            ============================================================ */
         .blend-bean-select {
             flex: 1;
+            min-width: 0;
             padding: 10px;
             background: rgba(255,255,255,0.06);
             color: var(--beige);
@@ -806,6 +808,7 @@
         
         .blend-slider {
             flex: 1;
+            min-width: 0;
             height: 4px;
             -webkit-appearance: none;
             appearance: none;
@@ -989,6 +992,23 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: var(--space-lg);
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: minmax(0, 1fr);
+                gap: var(--space-lg);
+            }
+            .grid-3, .grid-4 {
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+                gap: var(--space-md);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-3, .grid-4 {
+                grid-template-columns: minmax(0, 1fr);
+            }
         }
         
         .text-center {
@@ -1395,14 +1415,34 @@
         /* ============================================================
            CART
            ============================================================ */
+        .navbar-icons {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
         .cart-nav-btn {
             position: relative;
-            background: none;
-            border: none;
-            font-size: 22px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
             cursor: pointer;
-            padding: 4px 8px;
             color: var(--beige);
+            transition: all var(--transition-fast);
+        }
+        .cart-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: var(--gold-light);
+        }
+        .cart-nav-btn.has-items {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--espresso-black);
         }
         .cart-nav-badge {
             position: absolute;
@@ -1418,6 +1458,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 2px solid var(--espresso-black);
             padding: 0 4px;
             font-family: var(--font-ui);
         }
@@ -1493,16 +1534,9 @@
             <img src="assets/jossee-logo.png" alt="Jossee Coffee" style="height:42px; width:auto; object-fit:contain;">
             <span style="font-family:var(--font-latin); font-weight:800; letter-spacing:1px;">JOSSEE</span>
         </a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
-        <button class="cart-nav-btn" id="cartNavBtn" aria-label="عرض السلة">
-            🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
-        </button>
         <ul class="nav-links" id="navLinks">
             <li><a href="#tab-home" data-tab="home" class="tab-nav-link active-tab">الرئيسية</a></li>
             <li><a href="#tab-products" data-tab="products" class="tab-nav-link">منتجاتنا</a></li>
-            <li><a href="#tab-about" data-tab="about" class="tab-nav-link">عالم القهوة</a></li>
             <li><a href="#tab-flavors" data-tab="flavors" class="tab-nav-link">النكهات ومزيجك</a></li>
             <li><a href="#tab-brewing" data-tab="brewing" class="tab-nav-link">طرق التحضير</a></li>
             <li>
@@ -1511,6 +1545,14 @@
                 </button>
             </li>
         </ul>
+        <div class="navbar-icons">
+            <button class="cart-nav-btn" id="cartNavBtn" aria-label="عرض السلة">
+                🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </nav>
 
     <!-- ============================================================
@@ -1534,7 +1576,6 @@
             </p>
             <div class="hero-cta-group">
                 <a href="#coffee" class="btn btn-primary">استكشف القهوة</a>
-                <a href="#lab" class="btn btn-secondary">مختبر القهوة</a>
             </div>
         </div>
     </section>
@@ -1556,6 +1597,31 @@
             <div class="trust-badge">
                 <div class="trust-badge-number">🚚</div>
                 <div class="trust-badge-label">توصيل لكل الجمهورية</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="story" style="background: var(--beige);">
+        <div class="container grid-2" style="align-items: center;">
+            <div class="coffee-image scroll-reveal" style="height: 450px;">
+                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
+            </div>
+            <div class="scroll-reveal">
+                <span class="section-label" style="text-align: right;">OUR STORY</span>
+                <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin: var(--space-md) 0;">
+                    قصة خوسيه<br>
+                    <span style="color: var(--coffee-brown);">شغف القهوة</span>
+                </h2>
+                <p style="color: var(--coffee-brown); line-height: 1.8; margin-bottom: var(--space-md);">
+                    بدأت رحلة خوسيه بشغف بسيط: تقديم فنجان قهوة لا يشبه غيره. اخترنا اسم "خوسيه" ليحمل معه
+                    روح المغامرة والاكتشاف، ومن يومها ونحن نبحث عن أفضل حبوب الأرابيكا حول العالم — من مرتفعات
+                    إثيوبيا وكينيا، إلى وديان أمريكا الجنوبية، وسهول اليمن — لنقدّم لعملائنا تجربة قهوة حقيقية،
+                    بعيدة عن الاستسهال والتسويق الفارغ.
+                </p>
+                <p style="color: var(--coffee-brown); line-height: 1.8;">
+                    نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
+                    حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
+                </p>
             </div>
         </div>
     </section>
@@ -1586,66 +1652,17 @@
         </div>
     </section>
 
-    <section id="lab" style="background: var(--espresso-black); color: var(--beige);">
+    <section id="education" style="background: var(--beige);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 2px; font-size: 14px;">COFFEE LAB</span>
-                <h2 class="section-title" style="color: var(--beige);">مختبر القهوة</h2>
-                <p style="color: var(--sand); max-width: 600px; margin: var(--space-sm) auto 0;">استكشف. امزج. حضّر. افهم.</p>
+                <span class="section-label">COFFEE EDUCATION</span>
+                <h2 class="section-title">موسوعة القهوة</h2>
+                <p class="section-subtitle">تعرف على أساسيات القهوة في دقيقة</p>
             </div>
-
-            <div class="grid-3" id="labGrid">
-                <div class="lab-card">
-                    <div class="lab-icon">🔍</div>
-                    <h3 class="lab-title">ابحث عن قهوتك</h3>
-                    <p class="lab-desc">أجب عن أسئلة بسيطة وابحث عن البن المثالي لذوقك</p>
-                    <a href="#find-coffee" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">ابدأ الآن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">⚗️</div>
-                    <h3 class="lab-title">اصنع مزيجك</h3>
-                    <p class="lab-desc">امزج أنواع البن المفضلة لديك واصنع Blend فريد</p>
-                    <a href="#blend-builder" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">اصنع Blend</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📐</div>
-                    <h3 class="lab-title">حاسبة الإسبريسو</h3>
-                    <p class="lab-desc">احسب الجرعة والنسبة المثالية لإسبريسو رائع</p>
-                    <a href="#espresso-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب الآن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">☕</div>
-                    <h3 class="lab-title">حاسبة التحضير</h3>
-                    <p class="lab-desc">احسب نسبة القهوة إلى الماء لطريقة التحضير المفضلة</p>
-                    <a href="#brew-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">🔧</div>
-                    <h3 class="lab-title">دليل الطحن</h3>
-                    <p class="lab-desc">تعرف على درجة الطحن المناسبة لكل طريقة تحضير</p>
-                    <a href="#grind-guide" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">استكشف</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">🛠️</div>
-                    <h3 class="lab-title">مشكلة في الاستخلاص؟</h3>
-                    <p class="lab-desc">شخص وحل مشاكل استخلاص القهوة</p>
-                    <a href="#troubleshooter" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">شخص</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📊</div>
-                    <h3 class="lab-title">قارن القهوة</h3>
-                    <p class="lab-desc">قارن بين أنواع القهوة المختلفة جنباً إلى جنب</p>
-                    <a href="#coffee-comparison" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">قارن</a>
-                </div>
-                <div class="lab-card">
-                    <div class="lab-icon">📝</div>
-                    <h3 class="lab-title">سجل التحضير</h3>
-                    <p class="lab-desc">سجل تجاربك وتتبع تقدمك في تحضير القهوة</p>
-                    <a href="#brew-log" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">سجل</a>
-                </div>
-            </div>
+            <div id="educationList" style="max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-sm);" role="list"></div>
         </div>
     </section>
+
 
     </div>
 
@@ -1793,46 +1810,69 @@
 
     </div>
 
-    <div class="tab-panel" id="tab-about" data-tab-panel="about" role="tabpanel" aria-label="عالم القهوة">
-    <section id="story" style="background: var(--beige);">
-        <div class="container grid-2" style="align-items: center;">
-            <div class="coffee-image scroll-reveal" style="height: 450px;">
-                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=80" alt="Coffee farm" loading="lazy">
-            </div>
-            <div class="scroll-reveal">
-                <span class="section-label" style="text-align: right;">OUR STORY</span>
-                <h2 style="font-size: clamp(1.8rem, 3vw, 2.8rem); margin: var(--space-md) 0;">
-                    قصة خوسيه<br>
-                    <span style="color: var(--coffee-brown);">شغف القهوة</span>
-                </h2>
-                <p style="color: var(--coffee-brown); line-height: 1.8; margin-bottom: var(--space-md);">
-                    بدأت رحلة خوسيه بشغف بسيط: تقديم فنجان قهوة لا يشبه غيره. اخترنا اسم "خوسيه" ليحمل معه
-                    روح المغامرة والاكتشاف، ومن يومها ونحن نبحث عن أفضل حبوب الأرابيكا حول العالم — من مرتفعات
-                    إثيوبيا وكينيا، إلى وديان أمريكا الجنوبية، وسهول اليمن — لنقدّم لعملائنا تجربة قهوة حقيقية،
-                    بعيدة عن الاستسهال والتسويق الفارغ.
-                </p>
-                <p style="color: var(--coffee-brown); line-height: 1.8;">
-                    نقدم قهوة أرابيكا مختصة لا تُقارن بالقهوة التجارية ذات القوام الكثيف جداً
-                    حيث أنها غالباً مضاف إليها مواد كيميائية ضارة.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <section id="education" style="background: var(--beige);">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: var(--space-2xl);">
-                <span class="section-label">COFFEE EDUCATION</span>
-                <h2 class="section-title">موسوعة القهوة</h2>
-                <p class="section-subtitle">تعرف على أساسيات القهوة في دقيقة</p>
-            </div>
-            <div id="educationList" style="max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-sm);" role="list"></div>
-        </div>
-    </section>
-
-    </div>
 
     <div class="tab-panel" id="tab-flavors" data-tab-panel="flavors" role="tabpanel" aria-label="النكهات ومزيجك">
+    <section id="lab" style="background: var(--espresso-black); color: var(--beige);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: var(--space-2xl);">
+                <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 2px; font-size: 14px;">COFFEE LAB</span>
+                <h2 class="section-title" style="color: var(--beige);">مختبر القهوة</h2>
+                <p style="color: var(--sand); max-width: 600px; margin: var(--space-sm) auto 0;">استكشف. امزج. حضّر. افهم.</p>
+            </div>
+
+            <div class="grid-3" id="labGrid">
+                <div class="lab-card">
+                    <div class="lab-icon">🔍</div>
+                    <h3 class="lab-title">ابحث عن قهوتك</h3>
+                    <p class="lab-desc">أجب عن أسئلة بسيطة وابحث عن البن المثالي لذوقك</p>
+                    <a href="#find-coffee" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">ابدأ الآن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">⚗️</div>
+                    <h3 class="lab-title">اصنع مزيجك</h3>
+                    <p class="lab-desc">امزج أنواع البن المفضلة لديك واصنع Blend فريد</p>
+                    <a href="#blend-builder" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">اصنع Blend</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📐</div>
+                    <h3 class="lab-title">حاسبة الإسبريسو</h3>
+                    <p class="lab-desc">احسب الجرعة والنسبة المثالية لإسبريسو رائع</p>
+                    <a href="#espresso-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب الآن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">☕</div>
+                    <h3 class="lab-title">حاسبة التحضير</h3>
+                    <p class="lab-desc">احسب نسبة القهوة إلى الماء لطريقة التحضير المفضلة</p>
+                    <a href="#brew-calc" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">احسب</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">🔧</div>
+                    <h3 class="lab-title">دليل الطحن</h3>
+                    <p class="lab-desc">تعرف على درجة الطحن المناسبة لكل طريقة تحضير</p>
+                    <a href="#grind-guide" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">استكشف</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">🛠️</div>
+                    <h3 class="lab-title">مشكلة في الاستخلاص؟</h3>
+                    <p class="lab-desc">شخص وحل مشاكل استخلاص القهوة</p>
+                    <a href="#troubleshooter" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">شخص</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📊</div>
+                    <h3 class="lab-title">قارن القهوة</h3>
+                    <p class="lab-desc">قارن بين أنواع القهوة المختلفة جنباً إلى جنب</p>
+                    <a href="#coffee-comparison" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">قارن</a>
+                </div>
+                <div class="lab-card">
+                    <div class="lab-icon">📝</div>
+                    <h3 class="lab-title">سجل التحضير</h3>
+                    <p class="lab-desc">سجل تجاربك وتتبع تقدمك في تحضير القهوة</p>
+                    <a href="#brew-log" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 14px;">سجل</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="flavors" style="background: var(--cream);">
         <div class="container">
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
@@ -1992,35 +2032,11 @@
                                     <select class="blend-bean-select bean-select" data-bean="1" style="flex: 1; margin-right: var(--space-md);">
                                         <option value="">اختر نوع البن</option>
                                     </select>
-                                    <button class="blend-remove remove-bean" data-bean="1" style="display: none;">✕</button>
+                                    <button class="blend-remove remove-bean" data-bean="1" aria-label="إزالة نوع البن هذا" style="display: none;">✕</button>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: var(--space-md);">
-                                    <input type="range" class="blend-slider bean-slider" data-bean="1" min="0" max="100" value="50">
-                                    <span class="blend-percentage bean-percentage" data-bean="1">50%</span>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                                    <select class="blend-bean-select bean-select" data-bean="2" style="flex: 1; margin-right: var(--space-md);">
-                                        <option value="">اختر نوع البن</option>
-                                    </select>
-                                    <button class="blend-remove remove-bean" data-bean="2">✕</button>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                                    <input type="range" class="blend-slider bean-slider" data-bean="2" min="0" max="100" value="30">
-                                    <span class="blend-percentage bean-percentage" data-bean="2">30%</span>
-                                </div>
-                            </div>
-                            <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                                    <select class="blend-bean-select bean-select" data-bean="3" style="flex: 1; margin-right: var(--space-md);">
-                                        <option value="">اختر نوع البن</option>
-                                    </select>
-                                    <button class="blend-remove remove-bean" data-bean="3">✕</button>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                                    <input type="range" class="blend-slider bean-slider" data-bean="3" min="0" max="100" value="20">
-                                    <span class="blend-percentage bean-percentage" data-bean="3">20%</span>
+                                    <input type="range" class="blend-slider bean-slider" data-bean="1" min="0" max="100" value="100" style="display:none;">
+                                    <span class="blend-percentage bean-percentage" data-bean="1">100%</span>
                                 </div>
                             </div>
                         </div>
@@ -2065,6 +2081,7 @@
                                 <input type="text" id="blendName" placeholder="اسم المزيج" style="flex: 1; min-width: 150px; padding: 10px; background: rgba(255,255,255,0.06); color: var(--beige); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-sm); font-size: 14px;">
                                 <button id="saveBlendBtn" class="btn btn-primary" style="padding: 10px 24px;">💾 حفظ</button>
                                 <button id="loadBlendsBtn" class="btn btn-secondary" style="padding: 10px 24px;">📂 محفوظات</button>
+                                <button id="newBlendBtn" class="btn btn-secondary" style="padding: 10px 24px;">🔄 ابدأ مزيجًا جديدًا</button>
                             </div>
                             <div id="savedBlendsList" style="margin-top: var(--space-md); display: none;"></div>
                         </div>
@@ -2117,6 +2134,8 @@
                 <h2 class="section-title">حاسبة الإسبريسو</h2>
                 <p class="section-subtitle">احسب الجرعة والنسبة المثالية لإسبريسو رائع</p>
             </div>
+
+            <div id="blendContextBanner" style="display:none; margin-bottom: var(--space-lg); padding: var(--space-md) var(--space-lg); background: var(--coffee-brown); color: var(--beige); border-radius: var(--radius-md); font-size: 14px;"></div>
 
             <div style="background: var(--cream); padding: var(--space-2xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
                 <div style="margin-bottom: var(--space-lg);">
@@ -2171,6 +2190,8 @@
                 <p class="section-subtitle">احسب نسبة القهوة إلى الماء لطريقة التحضير المفضلة</p>
             </div>
 
+            <div id="blendContextBannerBrewCalc" style="display:none; margin-bottom: var(--space-lg); padding: var(--space-md) var(--space-lg); background: var(--coffee-brown); color: var(--beige); border-radius: var(--radius-md); font-size: 14px;"></div>
+
             <div style="background: var(--beige); padding: var(--space-2xl); border-radius: var(--radius-lg); border: 1px solid rgba(23,18,15,0.06);">
                 <div style="margin-bottom: var(--space-lg);">
                     <label style="display: block; font-weight: 700; margin-bottom: var(--space-sm);">جرعة القهوة (جرام)</label>
@@ -2209,6 +2230,10 @@
 
     <section id="grind-guide" style="background: var(--beige);">
         <div class="container" style="max-width: 900px;">
+            <div style="text-align: center; margin-bottom: var(--space-md);">
+                <span class="section-label" style="opacity: 0.7;">COFFEE TOOLS</span>
+                <p style="font-size: 13px; color: var(--medium-roast); margin-top: 4px;">أدوات القهوة المتقدمة — لعشاق التفاصيل</p>
+            </div>
             <div style="text-align: center; margin-bottom: var(--space-2xl);">
                 <span class="section-label">GUIDE</span>
                 <h2 class="section-title">دليل الطحن</h2>
@@ -2431,7 +2456,7 @@
                     <ul class="footer-links">
                         <li><a href="#story">قصتنا</a></li>
                         <li><a href="#lab">مختبر القهوة</a></li>
-                        <li><a href="#contact">اتصل بنا</a></li>
+                        <li><a href="https://wa.me/201281300002" target="_blank" rel="noopener">اتصل بنا</a></li>
                     </ul>
                 </div>
                 <div>
@@ -2465,7 +2490,7 @@
        ============================================================ -->
     <div class="coffee-detail-modal" id="coffee-detail" role="dialog" aria-modal="true" aria-label="تفاصيل نوع القهوة">
         <div class="coffee-detail-content">
-            <button class="coffee-detail-close" id="closeDetailBtn">&times;</button>
+            <button class="coffee-detail-close" id="closeDetailBtn" aria-label="إغلاق تفاصيل القهوة">&times;</button>
             <div id="detailContent" class="grid-2" style="gap: var(--space-2xl);">
                 <div>
                     <div style="border-radius: var(--radius-md); overflow: hidden; height: 400px; background: var(--cream);">
@@ -2521,14 +2546,15 @@
                         </div>
                     </div>
                     
+                    <button id="detailUseInBlendBtn" style="margin-top: var(--space-sm); width: 100%; padding: 12px; background: var(--espresso-black); color: var(--beige); border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">⚗️ استخدمها في مزيجي</button>
                     <button id="detailCompareBtn" style="margin-top: var(--space-md); width: 100%; padding: 12px; background: var(--coffee-brown); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">
                         📊 مقارنة هذا النوع
                     </button>
                     <div class="add-to-cart-row">
                         <div class="cart-qty-stepper">
-                            <button type="button" id="detailQtyMinus">−</button>
+                            <button type="button" id="detailQtyMinus" aria-label="إنقاص الكمية">−</button>
                             <span id="detailQtyValue" style="min-width: 20px; text-align: center; font-weight: 700;">1</span>
-                            <button type="button" id="detailQtyPlus">+</button>
+                            <button type="button" id="detailQtyPlus" aria-label="زيادة الكمية">+</button>
                         </div>
                         <button id="detailAddToCartBtn" class="btn btn-primary" style="flex: 1; justify-content: center; padding: 12px;">🛒 أضف للسلة</button>
                     </div>
@@ -4244,7 +4270,7 @@
                             loading="lazy"
                         >
                         ${coffee.priceTiers ? '<span style="position:absolute; top:10px; inset-inline-start:10px; background:var(--gold); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px;">سعر متغير بالكيلو</span>' : ''}
-                        <span class="wishlist-card-badge${wishlist.includes(coffee.id) ? ' active' : ''}" data-id="${coffee.id}" onclick="event.stopPropagation(); toggleWishlist('${coffee.id}');">${wishlist.includes(coffee.id) ? '♥' : '♡'}</span>
+                        <span class="wishlist-card-badge${wishlist.includes(coffee.id) ? ' active' : ''}" data-id="${coffee.id}" role="button" tabindex="0" aria-label="${L('إضافة/إزالة من المفضلة', 'Toggle wishlist')}" onclick="event.stopPropagation(); toggleWishlist('${coffee.id}');" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleWishlist('${coffee.id}');}">${wishlist.includes(coffee.id) ? '♥' : '♡'}</span>
                     </div>
                     <div class="coffee-card-content">
                         <h3 class="coffee-card-title">${coffee.name}</h3>
@@ -4496,6 +4522,12 @@
             displayRelatedCoffees(coffee.id);
             displayReviews(coffee.id);
 
+            document.getElementById('detailUseInBlendBtn').onclick = function() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                useCoffeeInBlend(coffee.id);
+            };
+
             document.getElementById('detailCompareBtn').onclick = function() {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
@@ -4522,6 +4554,15 @@
         document.getElementById('coffee-detail').addEventListener('click', function(e) {
             if (e.target === this) {
                 this.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key !== 'Escape') return;
+            const modal = document.getElementById('coffee-detail');
+            if (modal && modal.classList.contains('active')) {
+                modal.classList.remove('active');
                 document.body.style.overflow = '';
             }
         });
@@ -4602,6 +4643,36 @@
         if (doseInput) doseInput.addEventListener('input', updateEspressoCalc);
         if (ratioSelect) ratioSelect.addEventListener('change', updateEspressoCalc);
         updateEspressoCalc();
+
+        // Shows/hides the "you're brewing your blend" banner above the
+        // espresso calculator AND the general brew calculator, fed by
+        // currentBlendForBrew (set in generateBlendResult / cleared in
+        // updateBlend when the blend becomes invalid or empty).
+        function renderBlendContextBanner() {
+            const bannerIds = ['blendContextBanner', 'blendContextBannerBrewCalc'];
+            bannerIds.forEach(id => {
+                const banner = document.getElementById(id);
+                if (!banner) return;
+                if (!currentBlendForBrew) {
+                    banner.style.display = 'none';
+                    return;
+                }
+                const parts = currentBlendForBrew.beans.map(b => `${b.name} ${b.percentage}%`).join(' + ');
+                banner.innerHTML = `☕ أنت تحضّر مزيجك: <strong>${parts}</strong>`;
+                banner.style.display = 'block';
+            });
+        }
+
+        // Coming from "🔥 حضّر هذا المزيج" in Blend Builder: switches to the
+        // Brewing tab, scrolls to the espresso calculator, and shows the
+        // current blend's composition there.
+        function goToBrewWithBlend() {
+            document.querySelector('.tab-nav-link[data-tab="brewing"]')?.click();
+            renderBlendContextBanner();
+            requestAnimationFrame(() => {
+                document.getElementById('espresso-calc')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        }
 
         // ============================================================
         // 41-42. BREW CALCULATOR
@@ -4875,19 +4946,7 @@
             container.innerHTML = ids.map((id, idx) => {
                 const beanNum = idx + 1;
                 const val = equalVal + (idx === 0 ? remainder : 0);
-                return `
-                <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                        <select class="blend-bean-select bean-select" data-bean="${beanNum}" style="flex: 1; margin-right: var(--space-md);">
-                            <option value="">اختر نوع البن</option>
-                        </select>
-                        <button class="blend-remove remove-bean" data-bean="${beanNum}"${ids.length <= 2 ? ' style="display:none;"' : ''}>✕</button>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: var(--space-md);">
-                        <input type="range" class="blend-slider bean-slider" data-bean="${beanNum}" min="0" max="100" value="${val}">
-                        <span class="blend-percentage bean-percentage" data-bean="${beanNum}">${val}%</span>
-                    </div>
-                </div>`;
+                return beanRowHtml(beanNum, val, ids.length > 2);
             }).join('');
 
             beanCount = ids.length;
@@ -4897,6 +4956,7 @@
                 if (sel) sel.value = id;
             });
             document.querySelectorAll('#blendBeans > div').forEach(div => attachBlendEvents(div));
+            syncBeanRowVisibility();
 
             document.getElementById('blend-builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
             updateBlend();
@@ -5078,7 +5138,81 @@
         // ============================================================
         // 27-35. BLEND BUILDER
         // ============================================================
-        let beanCount = 3;
+        let beanCount = 1;
+
+        // Builds one blend-bean row's markup. Shared by the empty starting
+        // state, "+ أضف نوع بن آخر", applyFlavorBlend(), and useCoffeeInBlend()
+        // so there's a single source of truth for a bean row's structure.
+        function beanRowHtml(beanNum, value, removable) {
+            return `
+                <div style="margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
+                        <select class="blend-bean-select bean-select" data-bean="${beanNum}" style="flex: 1; margin-right: var(--space-md);">
+                            <option value="">اختر نوع البن</option>
+                        </select>
+                        <button class="blend-remove remove-bean" data-bean="${beanNum}" aria-label="${L('إزالة نوع البن هذا', 'Remove this bean')}"${removable ? '' : ' style="display:none;"'}>✕</button>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: var(--space-md);">
+                        <input type="range" class="blend-slider bean-slider" data-bean="${beanNum}" min="0" max="100" value="${value}"${removable ? '' : ' style="display:none;"'}>
+                        <span class="blend-percentage bean-percentage" data-bean="${beanNum}">${value}%</span>
+                    </div>
+                </div>`;
+        }
+
+        // Keeps bean-row visibility consistent with the "1 bean = 100%,
+        // fixed" vs "2+ beans = adjustable sliders" rule, wherever rows
+        // get added, removed, or rebuilt from.
+        function syncBeanRowVisibility() {
+            const rows = Array.from(document.querySelectorAll('#blendBeans .bean-select'));
+            const count = rows.length;
+            rows.forEach(sel => {
+                const num = sel.dataset.bean;
+                const slider = document.querySelector(`.bean-slider[data-bean="${num}"]`);
+                const removeBtn = document.querySelector(`.remove-bean[data-bean="${num}"]`);
+                if (!slider || !removeBtn) return;
+                if (count <= 1) {
+                    slider.style.display = 'none';
+                    removeBtn.style.display = 'none';
+                    slider.value = 100;
+                    const pct = document.querySelector(`.bean-percentage[data-bean="${num}"]`);
+                    if (pct) pct.textContent = '100%';
+                } else {
+                    slider.style.display = '';
+                    removeBtn.style.display = '';
+                }
+            });
+        }
+
+        // Opens Blend Builder with a single coffee pre-selected at 100%,
+        // coming from "استخدمها في مزيجي" on the coffee detail modal.
+        function useCoffeeInBlend(coffeeId) {
+            beanCount = 1;
+            const container = document.getElementById('blendBeans');
+            container.innerHTML = beanRowHtml(1, 100, false);
+            populateBlendSelects();
+            const sel = document.querySelector('.bean-select[data-bean="1"]');
+            if (sel) sel.value = coffeeId;
+            attachBlendEvents(container.firstElementChild);
+            syncBeanRowVisibility();
+
+            document.querySelector('.tab-nav-link[data-tab="flavors"]')?.click();
+            requestAnimationFrame(() => {
+                document.getElementById('blend-builder')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            updateBlend();
+        }
+
+        document.getElementById('newBlendBtn')?.addEventListener('click', function() {
+            const hasSelection = Array.from(document.querySelectorAll('#blendBeans .bean-select')).some(s => s.value);
+            if (hasSelection && !confirm('هل تريد بدء مزيج جديد؟ هذا سيمسح المزيج الحالي غير المحفوظ.')) return;
+            beanCount = 1;
+            document.getElementById('blendBeans').innerHTML = beanRowHtml(1, 100, false);
+            populateBlendSelects();
+            attachBlendEvents(document.getElementById('blendBeans').firstElementChild);
+            document.getElementById('blendName').value = '';
+            currentBlendForBrew = null;
+            updateBlend();
+        });
 
         function populateBlendSelects() {
             document.querySelectorAll('.bean-select').forEach(sel => {
@@ -5120,23 +5254,51 @@
                 });
             });
 
+            const selectedIds = blendData.map(b => b.id).filter(Boolean);
+            const hasDuplicate = new Set(selectedIds).size !== selectedIds.length;
+
             const totalEl = document.getElementById('totalPercentage');
             const warningEl = document.getElementById('totalWarning');
             totalEl.textContent = total + '%';
-            totalEl.style.color = total === 100 ? 'var(--gold-light)' : '#FF6B6B';
-            warningEl.style.display = total === 100 ? 'none' : 'block';
+            totalEl.style.color = (total === 100 && !hasDuplicate) ? 'var(--gold-light)' : '#FF6B6B';
+
+            if (hasDuplicate) {
+                warningEl.textContent = '⚠️ لا يمكن اختيار نفس نوع القهوة أكثر من مرة في المزيج';
+                warningEl.style.display = 'block';
+            } else if (total !== 100 && selectedIds.length > 0) {
+                warningEl.textContent = '⚠️ يجب أن يكون مجموع النسب 100%';
+                warningEl.style.display = 'block';
+            } else {
+                warningEl.style.display = 'none';
+            }
 
             const allSelected = blendData.every(b => b.id && b.id !== '');
-            if (total === 100 && allSelected && blendData.length >= 2) {
+            if (total === 100 && allSelected && blendData.length >= 2 && !hasDuplicate) {
                 generateBlendResult(blendData);
             } else {
+                let msg;
+                if (selectedIds.length === 0) {
+                    msg = 'اختر قهوة واحدة على الأقل لبدء المزيج';
+                } else if (hasDuplicate) {
+                    msg = 'اخترت نفس نوع القهوة أكثر من مرة — غيّر أحد الأنواع';
+                } else if (blendData.length === 1) {
+                    msg = 'أضف نوع قهوة آخر لإكمال مزيجك';
+                } else if (!allSelected) {
+                    msg = 'اختر نوع البن لكل عنصر في المزيج';
+                } else if (total !== 100) {
+                    msg = 'يجب أن يكون مجموع نسب المزيج 100%';
+                } else {
+                    msg = 'اختر أنواع البن لإنشاء مزيجك';
+                }
                 document.getElementById('blendResult').innerHTML = `
                     <div style="text-align: center; padding: var(--space-xl); color: var(--sand);">
-                        <div style="font-size: 48px; margin-bottom: var(--space-md);">⚗️</div>
-                        <p>${total !== 100 ? '⚠️ يجب أن يكون المجموع 100%' : 'اختر أنواع البن لإنشاء مزيجك'}</p>
+                        <div style="font-size: 48px; margin-bottom: var(--space-md);">☕</div>
+                        <p>${msg}</p>
                     </div>
                 `;
                 document.getElementById('blendProfile').style.display = 'none';
+                currentBlendForBrew = null;
+                renderBlendContextBanner();
             }
         }
 
@@ -5161,6 +5323,8 @@
             
             return profile;
         }
+
+        let currentBlendForBrew = null;
 
         function generateBlendResult(blendData) {
             const profile = calculateBlendProfile(blendData);
@@ -5187,7 +5351,14 @@
                     <div style="font-size: 12px; color: var(--coffee-brown);">${L('الوزن الإجمالي', 'Total Weight')}</div>
                     <div style="font-size: 20px; font-weight: 900;">${batchSize} ${L('جرام', 'g')}</div>
                 </div>
+                <button id="brewThisBlendBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: var(--space-lg);">🔥 حضّر هذا المزيج</button>
             `;
+
+            currentBlendForBrew = {
+                beans: blendData.map(b => ({ name: coffeeMap[b.id]?.name || 'غير معروف', percentage: b.percentage })),
+                profile
+            };
+            document.getElementById('brewThisBlendBtn').onclick = goToBrewWithBlend;
 
             document.getElementById('blendProfile').style.display = 'block';
             const barsContainer = document.getElementById('profileBars');
@@ -5226,23 +5397,12 @@
             beanCount++;
             const container = document.getElementById('blendBeans');
             const newBean = document.createElement('div');
-            newBean.style.cssText = 'margin-bottom: var(--space-lg); padding: var(--space-md); background: rgba(255,255,255,0.03); border-radius: var(--radius-sm);';
-            newBean.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm);">
-                    <select class="blend-bean-select bean-select" data-bean="${beanCount}" style="flex: 1; margin-right: var(--space-md);">
-                        <option value="">اختر نوع البن</option>
-                    </select>
-                    <button class="blend-remove remove-bean" data-bean="${beanCount}">✕</button>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-md);">
-                    <input type="range" class="blend-slider bean-slider" data-bean="${beanCount}" min="0" max="100" value="${Math.floor(100 / beanCount)}">
-                    <span class="blend-percentage bean-percentage" data-bean="${beanCount}">${Math.floor(100 / beanCount)}%</span>
-                </div>
-            `;
-            container.appendChild(newBean);
-            
+            newBean.innerHTML = beanRowHtml(beanCount, Math.floor(100 / beanCount), true).trim();
+            container.appendChild(newBean.firstElementChild);
+
             populateBlendSelects();
-            attachBlendEvents(newBean);
+            attachBlendEvents(container.lastElementChild);
+            syncBeanRowVisibility();
             // Recalculate percentages
             const sliders = document.querySelectorAll('.bean-slider');
             const equalVal = Math.floor(100 / sliders.length);
@@ -5257,7 +5417,7 @@
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-bean')) {
                 const beanNum = parseInt(e.target.dataset.bean);
-                if (beanCount > 2) {
+                if (beanCount > 1) {
                     const beanDiv = e.target.closest('div[style*="margin-bottom"]');
                     if (beanDiv) beanDiv.remove();
                     beanCount--;
@@ -5268,6 +5428,7 @@
                         const num = slider.dataset.bean;
                         document.querySelector(`.bean-percentage[data-bean="${num}"]`).textContent = equalVal + '%';
                     });
+                    syncBeanRowVisibility();
                     updateBlend();
                 }
             }
@@ -6030,10 +6191,12 @@
 
         function updateCartBadge() {
             const badge = document.getElementById('cartBadge');
+            const btn = document.getElementById('cartNavBtn');
             if (!badge) return;
             const count = cart.reduce((s, i) => s + i.qty, 0);
             badge.textContent = count;
             badge.style.display = count > 0 ? 'flex' : 'none';
+            if (btn) btn.classList.toggle('has-items', count > 0);
         }
 
         function renderCartModal() {
@@ -6411,10 +6574,9 @@
             // Maps every original section id to the tab panel that now contains it,
             // so any existing link (hero buttons, lab hub, footer, etc.) still works.
             const ID_TO_TAB = {
-                'home': 'home', 'lab': 'home',
+                'home': 'home', 'story': 'home', 'education': 'home',
                 'coffee': 'products', 'find-coffee': 'products', 'coffee-comparison': 'products',
-                'story': 'about', 'education': 'about',
-                'flavors': 'flavors', 'flavor-wheel': 'flavors', 'blend-builder': 'flavors',
+                'lab': 'flavors', 'flavors': 'flavors', 'flavor-wheel': 'flavors', 'blend-builder': 'flavors',
                 'brewing': 'brewing', 'drinks': 'brewing', 'equipment': 'brewing',
                 'espresso-calc': 'brewing', 'brew-calc': 'brewing', 'grind-guide': 'brewing',
                 'troubleshooter': 'brewing', 'brew-log': 'brewing'
@@ -6435,6 +6597,12 @@
                 if (didSwitch && typeof handleScrollReveal === 'function') {
                     // let the just-shown panel's reveal elements catch up
                     setTimeout(handleScrollReveal, 50);
+                }
+                if (didSwitch && history.replaceState) {
+                    // Keep the URL in sync with the active tab (no new history
+                    // entry, no scroll jump) so refresh / share / back-forward
+                    // land on the right tab without a full router.
+                    history.replaceState(null, '', '#tab-' + tabKey);
                 }
                 return didSwitch;
             }
@@ -6469,6 +6637,13 @@
                     }, 60);
                 }
             }
+
+            // Browser Back/Forward: re-sync the visible tab with the hash.
+            window.addEventListener('popstate', function () {
+                const id = location.hash.slice(1);
+                const tabKey = ID_TO_TAB[id] || (id.startsWith('tab-') ? id.replace('tab-', '') : null);
+                if (tabKey) activateTab(tabKey);
+            });
         })();
     </script>
 </body>
