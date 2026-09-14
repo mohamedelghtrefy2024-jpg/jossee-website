@@ -6,7 +6,7 @@
 // instead of a stale cached copy. Old versioned caches are
 // deleted automatically on activate.
 // ============================================================
-const CACHE_VERSION = 'jossee-v1';
+const CACHE_VERSION = 'jossee-v2';
 const CACHE_NAME = `jossee-cache-${CACHE_VERSION}`;
 
 // Only the app shell is precached on install. Product photos and
@@ -16,6 +16,7 @@ const CACHE_NAME = `jossee-cache-${CACHE_VERSION}`;
 const APP_SHELL = [
     './',
     './index.html',
+    './app.js',
     './manifest.json'
 ];
 
@@ -42,6 +43,12 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const req = event.request;
     if (req.method !== 'GET') return;
+
+    // Only ever cache/serve same-origin requests. Combined with the
+    // res.type === 'basic' check below (which already excludes opaque
+    // cross-origin responses), this keeps the cache from ever being able
+    // to hold a cross-origin response, deliberate or otherwise.
+    if (new URL(req.url).origin !== self.location.origin) return;
 
     const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
 
