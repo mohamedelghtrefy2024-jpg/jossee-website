@@ -1444,6 +1444,10 @@
             border-color: var(--gold);
             color: var(--espresso-black);
         }
+        .cart-icon { display: block; }
+        .cart-nav-btn .cart-icon-full { display: none; }
+        .cart-nav-btn.has-items .cart-icon-empty { display: none; }
+        .cart-nav-btn.has-items .cart-icon-full { display: block; }
         .cart-nav-badge {
             position: absolute;
             top: -4px;
@@ -1547,7 +1551,19 @@
         </ul>
         <div class="navbar-icons">
             <button class="cart-nav-btn" id="cartNavBtn" aria-label="عرض السلة">
-                🛒 <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
+                <svg class="cart-icon cart-icon-empty" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                    <circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/>
+                    <circle cx="20" cy="21" r="1.4" fill="currentColor" stroke="none"/>
+                </svg>
+                <svg class="cart-icon cart-icon-full" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 8h10l-1 5H8z" fill="var(--gold-light)"/>
+                    <circle cx="10.5" cy="8" r="2.1" fill="var(--espresso-black)" opacity="0.18"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="9" cy="21" r="1.4" fill="currentColor"/>
+                    <circle cx="20" cy="21" r="1.4" fill="currentColor"/>
+                </svg>
+                <span class="cart-nav-badge" id="cartBadge" style="display:none;">0</span>
             </button>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
                 <span></span><span></span><span></span>
@@ -2066,7 +2082,7 @@
                         <div id="blendResult" role="region" aria-live="polite" aria-label="نتيجة المزيج" style="min-height: 200px;">
                             <div style="text-align: center; padding: var(--space-xl); color: var(--sand);">
                                 <div style="font-size: 48px; margin-bottom: var(--space-md);">⚗️</div>
-                                <p>اختر أنواع البن وعدّل النسب لإنشاء مزيجك</p>
+                                <p>ابدأ باختيار القهوة الأولى</p>
                             </div>
                         </div>
 
@@ -2369,6 +2385,10 @@
                         <input type="number" id="brewLogTemp" value="93" min="0" step="1" style="width: 100%; padding: 10px; border: 1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size: 14px;">
                     </div>
                     <div style="grid-column: 1 / -1;">
+                        <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: var(--space-xs);">النكهات التي لاحظتها (اختياري)</label>
+                        <div id="brewLogFlavorTags" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);"></div>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
                         <label style="display: block; font-weight: 700; font-size: 14px; margin-bottom: var(--space-xs);">ملاحظات التذوق</label>
                         <textarea id="brewLogNotes" rows="3" style="width: 100%; padding: 10px; border: 1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit;" placeholder="ما هي النكهات التي لاحظتها؟ هل كان الاستخلاص جيداً؟"></textarea>
                     </div>
@@ -2397,6 +2417,7 @@
                             </div>
                         </div>
                     </div>
+                    <div id="flavorJournalProfile" style="display: none; margin-top: var(--space-lg); padding: var(--space-md); background: rgba(23,18,15,0.04); border-radius: var(--radius-sm);"></div>
                 </div>
             </div>
         </div>
@@ -2546,6 +2567,8 @@
                         </div>
                     </div>
                     
+                    <div id="detailRestockReminder" style="display:none; margin-top: var(--space-md); padding: var(--space-md); background: rgba(90,56,40,0.08); border-radius: var(--radius-sm); align-items: center; gap: var(--space-sm); font-size: 13px; line-height: 1.6;"></div>
+
                     <button id="detailUseInBlendBtn" style="margin-top: var(--space-sm); width: 100%; padding: 12px; background: var(--espresso-black); color: var(--beige); border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">⚗️ استخدمها في مزيجي</button>
                     <button id="detailCompareBtn" style="margin-top: var(--space-md); width: 100%; padding: 12px; background: var(--coffee-brown); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 16px; font-weight: 700; transition: all 0.2s;">
                         📊 مقارنة هذا النوع
@@ -2616,10 +2639,33 @@
     <div class="coffee-detail-modal" id="cart-modal" role="dialog" aria-modal="true" aria-label="سلة المشتريات">
         <div class="coffee-detail-content cart-content">
             <button class="coffee-detail-close" id="closeCartBtn">&times;</button>
-            <h2 style="font-size: 22px; margin-bottom: var(--space-lg);">🛒 سلة المشتريات</h2>
+            <h2 style="font-size: 22px; margin-bottom: var(--space-lg); display: flex; align-items: center; gap: 8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="20" cy="21" r="1.4" fill="currentColor" stroke="none"/></svg> سلة المشتريات</h2>
             <div id="cartItemsList"></div>
             <div class="cart-summary" id="cartSummaryWrap" style="display:none;">
-                <textarea id="cartNotes" rows="2" placeholder="ملاحظات إضافية (إضافات، درجة تحميص، عنوان التوصيل...)"></textarea>
+                <div style="display: grid; gap: var(--space-sm); margin-bottom: var(--space-md);">
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">رقم الهاتف *</label>
+                        <input type="tel" id="cartPhone" placeholder="01xxxxxxxxx" style="width:100%; padding:10px; border:1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">رقم هاتف إضافي (اختياري)</label>
+                        <input type="tel" id="cartPhoneAlt" placeholder="01xxxxxxxxx" style="width:100%; padding:10px; border:1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size:14px;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">عنوان التوصيل بالتفصيل *</label>
+                        <textarea id="cartAddress" rows="2" placeholder="المحافظة، المنطقة، الشارع، رقم العقار، علامة مميزة..." style="width:100%; padding:10px; border:1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size:14px; font-family: inherit;"></textarea>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:12px; font-weight:700; margin-bottom:4px;">موقعك على الخريطة (اختياري لكن بيسهّل التوصيل)</label>
+                        <div style="display:flex; gap: var(--space-sm); flex-wrap: wrap;">
+                            <button type="button" id="cartShareLocationBtn" class="btn btn-outline" style="flex:1; min-width:160px; justify-content:center; padding:10px; font-size:13px;">📍 شارك موقعي الحالي</button>
+                            <a href="https://www.google.com/maps" target="_blank" rel="noopener" class="btn btn-outline" style="flex:1; min-width:160px; justify-content:center; padding:10px; font-size:13px; text-align:center; text-decoration:none;">🗺️ افتح خرائط جوجل يدوياً</a>
+                        </div>
+                        <input type="text" id="cartLocationLink" placeholder="رابط موقعك على الخريطة" style="margin-top:6px; width:100%; padding:10px; border:1px solid rgba(23,18,15,0.12); border-radius: var(--radius-sm); font-size:13px;">
+                        <div id="cartLocationStatus" style="font-size:11px; color: var(--coffee-brown); margin-top:4px;"></div>
+                    </div>
+                </div>
+                <textarea id="cartNotes" rows="2" placeholder="ملاحظات إضافية (درجة تحميص، ميعاد مناسب للتوصيل...)"></textarea>
                 <div class="cart-total-row">
                     <span>الإجمالي (تقريبي)</span>
                     <span id="cartTotal">0 ج</span>
@@ -2987,6 +3033,13 @@
 "قهوة قوية جداً": "Very strong coffee",
 "كيلو (1000 جم)": "Kilo (1000 g)",
 "ملاحظات التذوق": "Tasting notes",
+"النكهات التي لاحظتها (اختياري)": "Flavors you noticed (optional)",
+"رقم الهاتف *": "Phone number *",
+"رقم هاتف إضافي (اختياري)": "Additional phone (optional)",
+"عنوان التوصيل بالتفصيل *": "Detailed delivery address *",
+"موقعك على الخريطة (اختياري لكن بيسهّل التوصيل)": "Your location on the map (optional, but helps delivery)",
+"📍 شارك موقعي الحالي": "📍 Share my current location",
+"🗺️ افتح خرائط جوجل يدوياً": "🗺️ Open Google Maps manually",
 "نتائج المقارنة": "Comparison results",
 "نسبة الاستخلاص": "Extraction ratio",
 "نظيف، هش، معقد": "Clean, crisp, complex",
@@ -3218,7 +3271,8 @@
 "تقليل جرعة القهوة (Dose) مع ثبات النسبة": "Reduce coffee dose while keeping the ratio",
 "زيادة جرعة القهوة (Dose) مع ثبات النسبة": "Increase coffee dose while keeping the ratio",
 "أجب عن الأسئلة لنجد لك البن الأنسب لذوقك": "Answer the questions and we'll find the best coffee for your taste",
-"اختر أنواع البن وعدّل النسب لإنشاء مزيجك": "Choose coffee types and adjust ratios to create your blend",
+"ابدأ باختيار القهوة الأولى": "Start by choosing your first coffee",
+"أضف نوع قهوة آخر لتكوين المزيج": "Add another coffee to build your blend",
 "اختر حتى 3 أنواع لمقارنتها جنباً إلى جنب": "Choose up to 3 types to compare side by side",
 "تقليل وقت الاستخلاص (استهدف 25-30 ثانية)": "Reduce extraction time (target 25-30 seconds)",
 "زيادة وقت الاستخلاص (استهدف 25-30 ثانية)": "Increase extraction time (target 25-30 seconds)",
@@ -4421,6 +4475,13 @@
             'grandi-jose-mahouj': ['مستكة يوناني', 'جينسينج أحمر كوري']
         };
 
+        // Add-ons the user selects in the coffee detail modal are tracked
+        // here by index into STANDARD_ADDONS, reset each time a coffee's
+        // detail view opens, and carried into addToCart() so their price
+        // is actually included in the order (previously informational
+        // only — see renderAddOns below).
+        let detailSelectedAddOns = [];
+
         function renderAddOns(coffee) {
             const container = document.getElementById('detailAddOns');
             const wrapper = document.getElementById('detailAddOnsWrap');
@@ -4437,14 +4498,44 @@
                     </div>`;
             } else {
                 container.innerHTML = `
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13px;">
-                        ${STANDARD_ADDONS.map(a => `
-                            <span>${T(a.name)}${a.note ? ` <span style="color: var(--coffee-brown); font-size: 11px;">(${T(a.note)})</span>` : ''}</span>
-                            <span style="font-weight: 700;">${a.price}${L(' ج', ' EGP')}</span>
-                        `).join('')}
-                    </div>`;
+                    <p style="font-size: 12px; color: var(--coffee-brown); margin-bottom: 6px;">${L('اختر الإضافات المطلوبة (بتتحسب في إجمالي الطلب):', 'Choose the add-ons you want (added to the order total):')}</p>
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        ${STANDARD_ADDONS.map((a, idx) => {
+                            const checked = detailSelectedAddOns.includes(idx);
+                            return `
+                            <label class="detail-addon-row" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); background: ${checked ? 'rgba(90,56,40,0.08)' : 'transparent'}; cursor: pointer; font-size: 13px;">
+                                <span style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" class="detail-addon-checkbox" data-idx="${idx}"${checked ? ' checked' : ''}>
+                                    <span>${T(a.name)}${a.note ? ` <span style="color: var(--coffee-brown); font-size: 11px;">(${T(a.note)})</span>` : ''}</span>
+                                </span>
+                                <span style="font-weight: 700;">+${a.price}${L(' ج', ' EGP')}</span>
+                            </label>`;
+                        }).join('')}
+                    </div>
+                    <div id="detailAddOnsSubtotal" style="margin-top: 8px; font-size: 12px; color: var(--coffee-brown); text-align: left;"></div>`;
+                updateAddOnsSubtotalDisplay();
             }
         }
+
+        function updateAddOnsSubtotalDisplay() {
+            const el = document.getElementById('detailAddOnsSubtotal');
+            if (!el) return;
+            const total = detailSelectedAddOns.reduce((sum, idx) => sum + (STANDARD_ADDONS[idx]?.price || 0), 0);
+            el.textContent = total > 0 ? `${L('إجمالي الإضافات', 'Add-ons total')}: +${total}${L(' ج', ' EGP')}` : '';
+        }
+
+        document.getElementById('detailAddOns')?.addEventListener('change', function(e) {
+            if (!e.target.classList.contains('detail-addon-checkbox')) return;
+            const idx = parseInt(e.target.dataset.idx, 10);
+            if (e.target.checked) {
+                if (!detailSelectedAddOns.includes(idx)) detailSelectedAddOns.push(idx);
+            } else {
+                detailSelectedAddOns = detailSelectedAddOns.filter(i => i !== idx);
+            }
+            const row = e.target.closest('.detail-addon-row');
+            if (row) row.style.background = e.target.checked ? 'rgba(90,56,40,0.08)' : 'transparent';
+            updateAddOnsSubtotalDisplay();
+        });
 
         function openCoffeeDetail(id) {
             const coffee = COFFEES.find(c => c.id === id);
@@ -4470,7 +4561,22 @@
             document.getElementById('detailPrice').textContent = coffee.price + L(' ج', ' EGP');
             document.getElementById('detailWeight').textContent = coffee.weight + L(' جم', 'g');
             renderPriceTiers(coffee);
+            detailSelectedAddOns = [];
             renderAddOns(coffee);
+
+            const restockEl = document.getElementById('detailRestockReminder');
+            if (restockEl) {
+                const est = estimateBagDuration(coffee.id);
+                if (est) {
+                    restockEl.style.display = 'flex';
+                    const msgAr = `بناءً على ${est.brewsCount} تحضيرة مسجّلة في سجل التحضير (~${est.gramsPerDay} جم/يوم)، كيس ${coffee.weight}جم من ${coffee.name} هيكفيك تقريبًا <strong>${est.days} يوم</strong>.`;
+                    const msgEn = `Based on ${est.brewsCount} logged brews (~${est.gramsPerDay} g/day), a ${coffee.weight}g bag of ${coffee.nameEn || coffee.name} should last you about <strong>${est.days} days</strong>.`;
+                    restockEl.innerHTML = `<span style="font-size: 20px;">📦</span><span>${L(msgAr, msgEn)}</span>`;
+                } else {
+                    restockEl.style.display = 'none';
+                }
+            }
+
             document.getElementById('detailImage').src = getCoffeeImage(coffee.id);
             document.getElementById('detailImage').alt = coffee.name;
             
@@ -5278,11 +5384,11 @@
             } else {
                 let msg;
                 if (selectedIds.length === 0) {
-                    msg = 'اختر قهوة واحدة على الأقل لبدء المزيج';
+                    msg = 'ابدأ باختيار القهوة الأولى';
                 } else if (hasDuplicate) {
                     msg = 'اخترت نفس نوع القهوة أكثر من مرة — غيّر أحد الأنواع';
                 } else if (blendData.length === 1) {
-                    msg = 'أضف نوع قهوة آخر لإكمال مزيجك';
+                    msg = 'أضف نوع قهوة آخر لتكوين المزيج';
                 } else if (!allSelected) {
                     msg = 'اختر نوع البن لكل عنصر في المزيج';
                 } else if (total !== 100) {
@@ -5293,7 +5399,7 @@
                 document.getElementById('blendResult').innerHTML = `
                     <div style="text-align: center; padding: var(--space-xl); color: var(--sand);">
                         <div style="font-size: 48px; margin-bottom: var(--space-md);">☕</div>
-                        <p>${msg}</p>
+                        <p>${T(msg)}</p>
                     </div>
                 `;
                 document.getElementById('blendProfile').style.display = 'none';
@@ -5324,12 +5430,36 @@
             return profile;
         }
 
+        function calculateBlendCost(blendData, batchSize) {
+            return blendData.reduce((sum, b) => {
+                const coffee = coffeeMap[b.id];
+                if (!coffee || !coffee.price || !coffee.weight) return sum;
+                const gramsUsed = batchSize * (b.percentage / 100);
+                return sum + (coffee.price / coffee.weight) * gramsUsed;
+            }, 0);
+        }
+
+        function buildBlendShareMessage(blendData, batchSize, cost) {
+            const lines = [L('مزيج القهوة بتاعي من Jossee Coffee ⚗️', 'My Jossee Coffee blend ⚗️'), ''];
+            blendData.forEach(b => {
+                const coffee = coffeeMap[b.id];
+                if (coffee) lines.push(`• ${T(coffee.name)} — ${b.percentage}%`);
+            });
+            lines.push('');
+            lines.push(`${L('حجم الدفعة', 'Batch size')}: ${batchSize} ${L('جرام', 'g')}`);
+            if (cost > 0) {
+                lines.push(`${L('التكلفة التقريبية', 'Estimated cost')}: ${Math.round(cost)} ${L('ج', 'EGP')}`);
+            }
+            return lines.join('\n');
+        }
+
         let currentBlendForBrew = null;
 
         function generateBlendResult(blendData) {
             const profile = calculateBlendProfile(blendData);
             const resultDiv = document.getElementById('blendResult');
             const batchSize = parseInt(document.getElementById('batchSize').value) || 1000;
+            const cost = calculateBlendCost(blendData, batchSize);
             
             let beansHtml = blendData.map(b => {
                 const coffee = coffeeMap[b.id];
@@ -5347,11 +5477,20 @@
                     <div style="font-size: 14px; color: var(--gold-light); margin-bottom: var(--space-sm);">مزيجك</div>
                     ${beansHtml}
                 </div>
-                <div style="padding: var(--space-md); background: rgba(255,255,255,0.04); border-radius: var(--radius-sm);">
-                    <div style="font-size: 12px; color: var(--coffee-brown);">${L('الوزن الإجمالي', 'Total Weight')}</div>
-                    <div style="font-size: 20px; font-weight: 900;">${batchSize} ${L('جرام', 'g')}</div>
+                <div style="display: flex; gap: var(--space-md);">
+                    <div style="flex: 1; padding: var(--space-md); background: rgba(255,255,255,0.04); border-radius: var(--radius-sm);">
+                        <div style="font-size: 12px; color: var(--coffee-brown);">${L('الوزن الإجمالي', 'Total Weight')}</div>
+                        <div style="font-size: 20px; font-weight: 900;">${batchSize} ${L('جرام', 'g')}</div>
+                    </div>
+                    <div style="flex: 1; padding: var(--space-md); background: rgba(255,255,255,0.04); border-radius: var(--radius-sm);">
+                        <div style="font-size: 12px; color: var(--coffee-brown);">${L('التكلفة التقريبية', 'Estimated Cost')}</div>
+                        <div style="font-size: 20px; font-weight: 900; color: var(--gold-light);">${Math.round(cost)} ${L('ج', 'EGP')}</div>
+                    </div>
                 </div>
-                <button id="brewThisBlendBtn" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: var(--space-lg);">🔥 حضّر هذا المزيج</button>
+                <div style="display: flex; gap: var(--space-md); margin-top: var(--space-lg);">
+                    <button id="brewThisBlendBtn" class="btn btn-primary" style="flex: 1; justify-content: center; padding: 12px;">🔥 حضّر هذا المزيج</button>
+                    <button id="shareBlendBtn" class="btn btn-outline" style="flex: 1; justify-content: center; padding: 12px;">📤 ${L('شارك مزيجك', 'Share blend')}</button>
+                </div>
             `;
 
             currentBlendForBrew = {
@@ -5359,6 +5498,10 @@
                 profile
             };
             document.getElementById('brewThisBlendBtn').onclick = goToBrewWithBlend;
+            document.getElementById('shareBlendBtn').onclick = function() {
+                const text = buildBlendShareMessage(blendData, batchSize, cost);
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            };
 
             document.getElementById('blendProfile').style.display = 'block';
             const barsContainer = document.getElementById('profileBars');
@@ -5403,13 +5546,17 @@
             populateBlendSelects();
             attachBlendEvents(container.lastElementChild);
             syncBeanRowVisibility();
-            // Recalculate percentages
+            // Recalculate percentages — distribute the remainder onto the
+            // first bean instead of flooring every slider (avoids the
+            // 33% + 33% + 33% = 99% total bug).
             const sliders = document.querySelectorAll('.bean-slider');
             const equalVal = Math.floor(100 / sliders.length);
-            sliders.forEach(slider => {
-                slider.value = equalVal;
+            const remainder = 100 - equalVal * sliders.length;
+            sliders.forEach((slider, idx) => {
+                const val = equalVal + (idx === 0 ? remainder : 0);
+                slider.value = val;
                 const num = slider.dataset.bean;
-                document.querySelector(`.bean-percentage[data-bean="${num}"]`).textContent = equalVal + '%';
+                document.querySelector(`.bean-percentage[data-bean="${num}"]`).textContent = val + '%';
             });
             updateBlend();
         });
@@ -5423,10 +5570,12 @@
                     beanCount--;
                     const sliders = document.querySelectorAll('.bean-slider');
                     const equalVal = Math.floor(100 / sliders.length);
-                    sliders.forEach(slider => {
-                        slider.value = equalVal;
+                    const remainder = 100 - equalVal * sliders.length;
+                    sliders.forEach((slider, idx) => {
+                        const val = equalVal + (idx === 0 ? remainder : 0);
+                        slider.value = val;
                         const num = slider.dataset.bean;
-                        document.querySelector(`.bean-percentage[data-bean="${num}"]`).textContent = equalVal + '%';
+                        document.querySelector(`.bean-percentage[data-bean="${num}"]`).textContent = val + '%';
                     });
                     syncBeanRowVisibility();
                     updateBlend();
@@ -5567,6 +5716,33 @@
             return JSON.parse(localStorage.getItem('jose_brew_logs') || '[]');
         }
 
+        // Estimates how many days a fresh bag of `coffeeId` would last,
+        // based on the user's own logged consumption rate for that coffee
+        // (grams used per day, averaged across their Brew Log history).
+        // Returns null when there isn't enough log data for a reliable
+        // estimate rather than guessing.
+        function estimateBagDuration(coffeeId) {
+            const logs = getBrewLogs().filter(l => l.coffeeId === coffeeId && l.dose);
+            if (logs.length < 2) return null;
+
+            const dates = logs.map(l => new Date(l.date).getTime()).sort((a, b) => a - b);
+            const spanDays = (dates[dates.length - 1] - dates[0]) / 86400000;
+            if (spanDays < 1) return null;
+
+            const totalGrams = logs.reduce((sum, l) => sum + l.dose, 0);
+            const gramsPerDay = totalGrams / spanDays;
+            if (gramsPerDay <= 0) return null;
+
+            const coffee = coffeeMap[coffeeId];
+            if (!coffee || !coffee.weight) return null;
+
+            return {
+                days: Math.max(1, Math.round(coffee.weight / gramsPerDay)),
+                gramsPerDay: Math.round(gramsPerDay * 10) / 10,
+                brewsCount: logs.length
+            };
+        }
+
         // Populate brew log coffee select
         function populateBrewLogSelect() {
             const el = document.getElementById('brewLogCoffee');
@@ -5574,6 +5750,74 @@
                 el.innerHTML = `<option value="">اختر النوع</option>` + 
                     COFFEES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             }
+        }
+
+        // Personal flavor journal: lets the user tag each logged brew with
+        // the same top-level categories used in the Flavor Wheel, then
+        // aggregates them across the whole Brew Log into a personal
+        // flavor profile (see renderFlavorJournalProfile below).
+        const brewLogSelectedFlavors = new Set();
+
+        function renderBrewLogFlavorTags() {
+            const el = document.getElementById('brewLogFlavorTags');
+            if (!el) return;
+            el.innerHTML = Object.entries(flavorData).map(([key, data]) => {
+                const active = brewLogSelectedFlavors.has(key);
+                return `<button type="button" class="brew-log-flavor-tag" data-flavor="${key}" style="padding: 6px 14px; border-radius: 20px; font-size: 13px; border: 1px solid rgba(23,18,15,0.15); background: ${active ? 'var(--coffee-brown)' : 'white'}; color: ${active ? 'white' : 'inherit'}; cursor: pointer;">${T(data.title)}</button>`;
+            }).join('');
+        }
+
+        document.getElementById('brewLogFlavorTags')?.addEventListener('click', function(e) {
+            const btn = e.target.closest('.brew-log-flavor-tag');
+            if (!btn) return;
+            const key = btn.dataset.flavor;
+            if (brewLogSelectedFlavors.has(key)) brewLogSelectedFlavors.delete(key);
+            else brewLogSelectedFlavors.add(key);
+            renderBrewLogFlavorTags();
+        });
+
+        renderBrewLogFlavorTags();
+
+        // Aggregates flavorTags across every saved Brew Log entry into a
+        // personal flavor profile — how often each flavor category shows
+        // up in what the user actually tasted, over time.
+        function renderFlavorJournalProfile() {
+            const container = document.getElementById('flavorJournalProfile');
+            if (!container) return;
+
+            const counts = {};
+            let total = 0;
+            getBrewLogs().forEach(log => {
+                (log.flavorTags || []).forEach(key => {
+                    counts[key] = (counts[key] || 0) + 1;
+                    total++;
+                });
+            });
+
+            if (total === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            const rows = Object.entries(counts)
+                .sort((a, b) => b[1] - a[1])
+                .map(([key, count]) => {
+                    const title = flavorData[key]?.title || key;
+                    const pct = Math.round((count / total) * 100);
+                    return `
+                        <div style="margin-bottom: var(--space-sm);">
+                            <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--coffee-brown);">
+                                <span>${T(title)}</span>
+                                <span>${count}×</span>
+                            </div>
+                            <div style="height: 4px; background: rgba(23,18,15,0.08); border-radius: 4px; overflow: hidden;">
+                                <div style="height: 100%; width: ${pct}%; background: var(--coffee-brown); border-radius: 4px;"></div>
+                            </div>
+                        </div>`;
+                }).join('');
+
+            container.style.display = 'block';
+            container.innerHTML = `<h4 style="font-size: 16px; margin-bottom: var(--space-md);">${L('بروفايل نكهتك الشخصي', 'Your personal flavor profile')}</h4>${rows}`;
         }
 
         document.getElementById('saveBrewLog')?.addEventListener('click', function() {
@@ -5601,11 +5845,14 @@
                 time,
                 temperature: temp,
                 notes,
+                flavorTags: [...brewLogSelectedFlavors],
                 ratio: (yield_ / dose).toFixed(1)
             });
             
             alert(T('✅ تم حفظ التجربة بنجاح!'));
             document.getElementById('brewLogNotes').value = '';
+            brewLogSelectedFlavors.clear();
+            renderBrewLogFlavorTags();
             document.getElementById('showBrewLogs').click();
         });
 
@@ -5617,6 +5864,7 @@
             if (logs.length === 0) {
                 list.innerHTML = `<div style="text-align: center; padding: var(--space-lg); color: var(--coffee-brown);">${L('لا توجد تجارب مسجلة بعد', 'No experiments logged yet')}</div>`;
                 history.style.display = 'block';
+                renderFlavorJournalProfile();
                 return;
             }
 
@@ -5631,6 +5879,7 @@
                             ${log.time ? ` • ${log.time}s` : ''}
                             ${log.temperature ? ` • ${log.temperature}°C` : ''}
                         </div>
+                        ${log.flavorTags && log.flavorTags.length ? `<div style="margin-top: var(--space-xs); display: flex; flex-wrap: wrap; gap: 4px;">${log.flavorTags.map(k => `<span style="font-size: 11px; padding: 2px 10px; background: rgba(90,56,40,0.08); border-radius: 12px;">${T(flavorData[k]?.title || k)}</span>`).join('')}</div>` : ''}
                         ${log.notes ? `<div style="font-size: 13px; color: var(--coffee-brown); margin-top: var(--space-xs);">📝 ${log.notes}</div>` : ''}
                     </div>
                     <div style="font-size: 12px; color: var(--coffee-brown); text-align: right;">
@@ -5646,6 +5895,7 @@
             document.getElementById('logAvgYield').textContent = avgYield.toFixed(1);
 
             history.style.display = 'block';
+            renderFlavorJournalProfile();
         });
 
         // ============================================================
@@ -6142,34 +6392,41 @@
             try { localStorage.setItem('jossee-cart', JSON.stringify(cart)); } catch (e) {}
         }
 
-        function addToCart(coffeeId, qty) {
+        function addToCart(coffeeId, qty, addOns) {
             const coffee = coffeeMap[coffeeId];
             if (!coffee) return;
             qty = Math.max(1, parseInt(qty, 10) || 1);
-            const existing = cart.find(item => item.id === coffeeId);
+            addOns = Array.isArray(addOns) ? addOns : [];
+            // Different add-on combos are kept as separate cart lines so
+            // their price is tracked and shown per line, not merged away.
+            const addOnsKey = addOns.map(a => a.name).sort().join('|');
+            const existing = cart.find(item => item.id === coffeeId && (item.addOnsKey || '') === addOnsKey);
             if (existing) {
                 existing.qty += qty;
             } else {
-                cart.push({ id: coffeeId, qty });
+                cart.push({ id: coffeeId, qty, addOns, addOnsKey });
             }
             saveCart();
             updateCartBadge();
             renderCartModal();
         }
 
-        function removeFromCart(coffeeId) {
-            cart = cart.filter(item => item.id !== coffeeId);
+        // Removes/updates by cart line index rather than coffee id, since
+        // the same coffee can now appear as separate lines with different
+        // add-on combos (see addToCart's addOnsKey grouping).
+        function removeFromCart(index) {
+            cart.splice(index, 1);
             saveCart();
             updateCartBadge();
             renderCartModal();
         }
 
-        function updateCartItemQty(coffeeId, delta) {
-            const item = cart.find(i => i.id === coffeeId);
+        function updateCartItemQty(index, delta) {
+            const item = cart[index];
             if (!item) return;
             item.qty += delta;
             if (item.qty <= 0) {
-                removeFromCart(coffeeId);
+                removeFromCart(index);
                 return;
             }
             saveCart();
@@ -6187,7 +6444,9 @@
         function calculateCartTotal() {
             return cart.reduce((sum, item) => {
                 const coffee = coffeeMap[item.id];
-                return coffee ? sum + (coffee.price * item.qty) : sum;
+                if (!coffee) return sum;
+                const addOnsCost = (item.addOns || []).reduce((s, a) => s + (a.price || 0), 0);
+                return sum + (coffee.price + addOnsCost) * item.qty;
             }, 0);
         }
 
@@ -6207,27 +6466,32 @@
             if (!list) return;
 
             if (cart.length === 0) {
-                list.innerHTML = `<div class="cart-empty">🛒<br>${T('السلة فارغة حالياً')}</div>`;
+                list.innerHTML = `<div class="cart-empty"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="margin: 0 auto var(--space-sm);"><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/><circle cx="9" cy="21" r="1.4" fill="currentColor" stroke="none"/><circle cx="20" cy="21" r="1.4" fill="currentColor" stroke="none"/></svg><br>${T('السلة فارغة حالياً')}</div>`;
                 summaryWrap.style.display = 'none';
                 return;
             }
 
-            list.innerHTML = cart.map(item => {
+            list.innerHTML = cart.map((item, index) => {
                 const coffee = coffeeMap[item.id];
                 if (!coffee) return '';
+                const addOnsCost = (item.addOns || []).reduce((s, a) => s + (a.price || 0), 0);
+                const addOnsLine = item.addOns && item.addOns.length
+                    ? `<div class="cart-item-meta" style="color: var(--coffee-brown);">+ ${item.addOns.map(a => T(a.name)).join('، ')} (+${addOnsCost}${L(' ج', ' EGP')})</div>`
+                    : '';
                 return `
                     <div class="cart-item-row">
                         <img src="${getCoffeeImage(coffee.id)}" alt="${T(coffee.name)}">
                         <div class="cart-item-info">
                             <div class="cart-item-name">${T(coffee.name)}</div>
                             <div class="cart-item-meta">${coffee.price}${L(' ج', ' EGP')} × ${coffee.weight}${L('جم', 'g')}</div>
+                            ${addOnsLine}
                         </div>
                         <div class="cart-qty-stepper">
-                            <button type="button" onclick="updateCartItemQty('${coffee.id}', -1)">−</button>
+                            <button type="button" onclick="updateCartItemQty(${index}, -1)">−</button>
                             <span style="min-width: 18px; text-align:center; font-weight:700;">${item.qty}</span>
-                            <button type="button" onclick="updateCartItemQty('${coffee.id}', 1)">+</button>
+                            <button type="button" onclick="updateCartItemQty(${index}, 1)">+</button>
                         </div>
-                        <button class="cart-item-remove" onclick="removeFromCart('${coffee.id}')" aria-label="حذف">🗑️</button>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})" aria-label="حذف">🗑️</button>
                     </div>
                 `;
             }).join('');
@@ -6252,10 +6516,24 @@
             cart.forEach(item => {
                 const coffee = coffeeMap[item.id];
                 if (!coffee) return;
-                lines.push(`• ${coffee.name} (${coffee.weight} ${L('جم', 'g')}) × ${item.qty} = ${coffee.price * item.qty} ${L('ج', 'EGP')}`);
+                const addOnsCost = (item.addOns || []).reduce((s, a) => s + (a.price || 0), 0);
+                const lineTotal = (coffee.price + addOnsCost) * item.qty;
+                lines.push(`• ${coffee.name} (${coffee.weight} ${L('جم', 'g')}) × ${item.qty} = ${lineTotal} ${L('ج', 'EGP')}`);
+                if (item.addOns && item.addOns.length) {
+                    lines.push(`   + ${L('إضافات', 'Add-ons')}: ${item.addOns.map(a => `${a.name} (+${a.price}${L('ج', 'EGP')})`).join('، ')}`);
+                }
             });
             lines.push('');
             lines.push(`${L('الإجمالي التقريبي', 'Approximate total')}: ${calculateCartTotal()} ${L('ج', 'EGP')}`);
+
+            lines.push('');
+            lines.push(`${L('رقم الهاتف', 'Phone')}: ${document.getElementById('cartPhone')?.value.trim() || ''}`);
+            const altPhone = document.getElementById('cartPhoneAlt')?.value.trim();
+            if (altPhone) lines.push(`${L('رقم هاتف إضافي', 'Alt. phone')}: ${altPhone}`);
+            lines.push(`${L('عنوان التوصيل', 'Delivery address')}: ${document.getElementById('cartAddress')?.value.trim() || ''}`);
+            const locationLink = document.getElementById('cartLocationLink')?.value.trim();
+            if (locationLink) lines.push(`${L('الموقع على الخريطة', 'Map location')}: ${locationLink}`);
+
             const notes = document.getElementById('cartNotes').value.trim();
             if (notes) {
                 lines.push('');
@@ -6263,6 +6541,59 @@
             }
             return lines.join('\n');
         }
+
+        // Remembers phone/address between visits so a returning customer
+        // doesn't have to retype it every order.
+        function loadCheckoutInfo() {
+            let info = {};
+            try { info = JSON.parse(localStorage.getItem('jossee-checkout-info') || '{}'); } catch (e) { info = {}; }
+            if (document.getElementById('cartPhone')) document.getElementById('cartPhone').value = info.phone || '';
+            if (document.getElementById('cartPhoneAlt')) document.getElementById('cartPhoneAlt').value = info.phoneAlt || '';
+            if (document.getElementById('cartAddress')) document.getElementById('cartAddress').value = info.address || '';
+        }
+
+        function saveCheckoutInfo() {
+            try {
+                localStorage.setItem('jossee-checkout-info', JSON.stringify({
+                    phone: document.getElementById('cartPhone')?.value.trim() || '',
+                    phoneAlt: document.getElementById('cartPhoneAlt')?.value.trim() || '',
+                    address: document.getElementById('cartAddress')?.value.trim() || ''
+                }));
+            } catch (e) {}
+        }
+
+        loadCheckoutInfo();
+        ['cartPhone', 'cartPhoneAlt', 'cartAddress'].forEach(id => {
+            document.getElementById(id)?.addEventListener('change', saveCheckoutInfo);
+        });
+
+        // Captures the customer's current device location (no API key
+        // needed) and turns it into a Google Maps link the delivery
+        // person can open directly. The manual "open Google Maps" link
+        // next to it covers browsers/users that block geolocation.
+        document.getElementById('cartShareLocationBtn')?.addEventListener('click', function() {
+            const btn = this;
+            const statusEl = document.getElementById('cartLocationStatus');
+            if (!navigator.geolocation) {
+                if (statusEl) statusEl.textContent = L('المتصفح لا يدعم تحديد الموقع — استخدم رابط خرائط جوجل يدوياً', 'Your browser doesn\'t support location sharing — use the manual Google Maps link instead');
+                return;
+            }
+            const original = btn.textContent;
+            btn.textContent = L('⏳ جارِ تحديد موقعك...', '⏳ Getting your location...');
+            btn.disabled = true;
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                const input = document.getElementById('cartLocationLink');
+                if (input) input.value = link;
+                if (statusEl) statusEl.textContent = L('✅ تم تحديد موقعك بنجاح', '✅ Location captured');
+                btn.textContent = original;
+                btn.disabled = false;
+            }, function() {
+                if (statusEl) statusEl.textContent = L('تعذر تحديد موقعك — افتح خرائط جوجل وانسخ رابط موقعك هنا', 'Could not get your location — open Google Maps and paste your location link here');
+                btn.textContent = original;
+                btn.disabled = false;
+            }, { enableHighAccuracy: true, timeout: 10000 });
+        });
 
         document.getElementById('cartNavBtn')?.addEventListener('click', openCartModal);
         document.getElementById('closeCartBtn')?.addEventListener('click', closeCartModal);
@@ -6275,6 +6606,19 @@
         });
         document.getElementById('checkoutWhatsappBtn')?.addEventListener('click', function() {
             if (cart.length === 0) return;
+            const phone = document.getElementById('cartPhone')?.value.trim();
+            const address = document.getElementById('cartAddress')?.value.trim();
+            if (!phone) {
+                alert(L('من فضلك أدخل رقم الهاتف', 'Please enter your phone number'));
+                document.getElementById('cartPhone')?.focus();
+                return;
+            }
+            if (!address) {
+                alert(L('من فضلك أدخل عنوان التوصيل بالتفصيل', 'Please enter your detailed delivery address'));
+                document.getElementById('cartAddress')?.focus();
+                return;
+            }
+            saveCheckoutInfo();
             const message = buildWhatsAppCheckoutMessage();
             window.open(`https://wa.me/201281300002?text=${encodeURIComponent(message)}`, '_blank');
         });
@@ -6291,7 +6635,8 @@
         document.getElementById('detailAddToCartBtn')?.addEventListener('click', function() {
             if (!currentDetailCoffeeId) return;
             const qty = parseInt(document.getElementById('detailQtyValue').textContent, 10) || 1;
-            addToCart(currentDetailCoffeeId, qty);
+            const addOns = detailSelectedAddOns.map(idx => STANDARD_ADDONS[idx]).filter(Boolean);
+            addToCart(currentDetailCoffeeId, qty, addOns);
             const btn = this;
             const original = btn.textContent;
             btn.textContent = L('✅ أُضيف للسلة', '✅ Added to cart');
